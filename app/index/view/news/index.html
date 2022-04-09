@@ -1,0 +1,114 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">文章列表</li>
+                <li>文章分类</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline" style="margin-right: 0px;margin-left: 0">
+                                <input type="text" name="username" lay-verify="required" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
+                            </div>
+                            <button class="layui-form-label">搜索</button>
+                            <a href="editnew" class="layui-form-label" style="float: right;">添加文章</a>
+                        </div>
+                    </div>
+                    <div class="layui-tab-content">
+                        <div class="layui-form layui-form-pane" action="">
+                            <table class="layui-table" lay-size="lg">
+                                <thead>
+                                <tr>
+                                    <th>封面</th>
+                                    <th>标题</th>
+                                    <th>分类</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name='newslist' id='data'}
+                                <tr>
+                                    <td>
+                                        <span><img style="width: 50px" src="{$data.cover}"></span>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a href="{:url('index/news')->build()}?id={$data.id}" target="_blank">{$data.title}</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{$data.newstitle}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a href="editnew?id={$data.id}" class="layui-btn layui-btn-primary layui-btn-sm">编辑</a>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;"
+                                                    data-confirm="确定要删除吗！" data-post='{:url("delnews")}' data-param="ids={$data.id}">
+                                                删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                            {$list|raw}
+                        </div>
+                        {$page|raw}
+                    </div>
+
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <button  data-modal='{:url("index/news/addtype")}' data-title="添加分类" class="layui-form-label" style="float: right;">添加分类</button>
+                        </div>
+                    </div>
+                    <div class="layui-tab-content">
+                        <div class="layui-form layui-form-pane" action="">
+                            <table class="layui-table" lay-size="lg">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>名称</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name='listdata' id='data' key="k"}
+                                <tr>
+                                    <td>
+                                        <div>{$k}</div>
+                                    </td>
+                                    <td>
+                                        <div>{$data.title}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button  data-modal='addtype?id={$data.id}' href="javascript:;"
+                                                     data-title="编辑分类" class="layui-btn layui-btn-primary layui-btn-sm">编辑</button>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:;"
+                                                    data-confirm="确定要删除吗！" data-post='{:url("deltype")}' data-param="ids={$data.id}">
+                                                删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                            {$list|raw}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}

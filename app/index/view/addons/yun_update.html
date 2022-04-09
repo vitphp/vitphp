@@ -1,0 +1,58 @@
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" id="formUpload" method="post">
+            <input type="hidden" name="id" value='{:input("id")}' >
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用名称</label>
+                <div class="layui-input-block">
+                    <input disabled type="text" name="name" id="name" value="{$addons.name|default=''}" required="" lay-verify="required" placeholder="请输入应用名称" autocomplete="off" class="layui-input layui-bg-gray">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">更新时间</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input layui-bg-gray" disabled value="{$addons.up_time|date='Y-m-d H:i:s'}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">更新描述</label>
+                <div class="layui-input-block">
+                    <textarea class="layui-textarea layui-bg-gray" disabled>{$addons.describe}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="btnUpload">立即升级</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+    layui.form.on('submit(btnUpload)', function(data){
+        var uploadLayerIndex = layui.layer.msg('升级中，请误刷新', {icon: 16,shade: 0.01,time:-1});
+        $.ajax({
+            type: "POST",
+            url: '{:url("yunUpdate")}?id={:input("id")}',
+            data: data.field,
+            dataType: "json",
+            success: function (res) {
+                layui.layer.close(uploadLayerIndex);
+                if(res.code!=1){
+                    layui.layer.msg(res.msg, {time: 1000});
+                }else{
+                    layui.layer.msg('更新成功', {time: 1000}, function(){
+                        window.parent && window.parent.location.reload();
+                    });
+                }
+            },
+            error: function(e){
+                layui.layer.close(uploadLayerIndex);
+                layui.layer.msg('网络异常');
+            }
+        });
+        return false;
+    });
+
+</script>

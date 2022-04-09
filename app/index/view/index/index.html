@@ -1,0 +1,61 @@
+{extend name="index"}
+{block name="content"}
+<title>{$system_site.title|default="VitPhp - 一款多应用Saas管理框架，基于Thinkphp和layui开发"}</title>
+        <!-- 内容主体区域 -->
+<!--        幻灯片-->
+
+{if $index_hdp}
+    <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            {volist  name="$index_hdp"  id="index_hdp"}
+            <div><a href="{$index_hdp.hdp_url}" {if $index_hdp.hdp_open ==1} target="_blank"{/if}><img style="width: 100%" src="{$index_hdp.hdp_img}"></a></div>
+            {/volist}
+        </div>
+    </div>
+{/if}
+    <div style="max-width:1280px;margin: 0 auto;">
+        <div class="text-center padding">
+            <p class="text-sl text-black">{$system_site.name|default="VitPhp"}多应用营销系统</p>
+            <p class="padding-top text-xl">助力企业实现自动化管理方案</p>
+        </div>
+        <div style="display: flex;">
+            <div style="position: relative;left: 0;padding-top: 130px;margin-left: 40px;width: 600px">
+                <p class="text-green text-sl padding">客户管理</p>
+                <p class="text-xxl padding">客户画像和行为路径实时同步，销售跟进记录一目了然，帮助进行客户分析转化</p>
+                <p class="text-xxl padding">自动打标签和主动打标签一体化，智能分析客户转化成功率</p>
+                <p class="text-xxl padding">自定义客户生命周期所属阶段，高效跟进客户，帮助企业提高销售效率</p>
+                <p class="text-xxl padding">动态掌握、行为跟踪、高效跟进、促进成单，建立客户管理销售漏斗</p>
+            </div>
+            <div>
+                <img src="__ROOT__/static/theme/images/pic1.png?v=4">
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div>
+                <img src="__ROOT__/static/theme/images/pic2.png?v=3">
+            </div>
+            <div style="position: relative;left: 0;padding-top: 130px;margin-left: 40px;width: 600px">
+                <p class="text-green text-sl padding">多元化的营销功能</p>
+                <p class="text-xxl padding">丰富的营销功能供客户选择</p>
+                <p class="text-xxl padding">帮助企业搭建集裂变获客、留存促活、销售变现、客户管理于一体的裂变增长系统</p>
+                <p class="text-xxl padding">解决企业获客难题，低成本、高效率、指数级获客</p>
+                <p class="text-xxl padding">通过价值活动激发客户传播动力，带来客户指数级新增</p>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div style="position: relative;left: 0;padding-top: 130px;margin-left: 40px;width: 600px">
+                <p class="text-green text-sl padding">丰富的权限管理</p>
+                <p class="text-xxl padding">用户平台到期时间控制</p>
+                <p class="text-xxl padding">应用管理添加</p>
+                <p class="text-xxl padding">代理权限设置</p>
+                <p class="text-xxl padding">代理官网设置</p>
+            </div>
+            <div>
+                <img src="__ROOT__/static/theme/images/pic3.png?v=3">
+            </div>
+        </div>
+    </div>
+    <div style="max-width:1280px;margin: 0 auto;">
+        {:$system_site.index_content}
+    </div>
+{/block}

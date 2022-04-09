@@ -1,0 +1,105 @@
+{extend name="index"}
+{block name="content"}
+<title>文档中心 - {$system_site.title|default=""}</title>
+<style>
+    .article-item .title {
+        line-height: 30px;
+        padding: 5px 130px 5px 0;
+        border-bottom: 1px solid #e8e9e7;
+        font-size: 18px;
+        font-weight: 400;
+    }
+    .article-item .time {
+        font-family: SourceCodeProRegular,Menlo,Monaco,Consolas,"Courier New",monospace,'Helvetica Neue',Arial,sans-serif;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: #fff;
+        padding: 0 20px 5px 20px;
+        line-height: 32px;
+    }
+    .article-item .content {
+        margin: 20px 0 0 0;
+        line-height: 28px;
+        position: relative;
+        min-height: 200px;
+    }
+    .article-item .time .day {
+        display: block;
+        text-align: center;
+        font-weight: 700;
+        font-size: 40px;
+        color: #6bc30d;
+        position: relative;
+        top: 2px;
+    }
+    .article-item .time .month, .article-item .time .year {
+        color: #989997;
+        font-size: 18px;
+    }
+</style>
+<div style="margin: 0 auto; max-width:1280px; display: flow-root; padding: 20px">
+    <div class="layui-card">
+    <div>
+        <div class="layui-panel radius-10">
+            <div style="float: left;width: 25%;text-align: center;height: auto;">
+                <h5 class="layui-card-header" style="height: 80px;line-height: 80px;">分类</h5>
+                <ul class="layui-menu" id="menu-main" style="text-align: left;">
+                    {volist name="type" id="t"}
+                    <li class="layui-menu-item-group layui-menu-item-down" style="padding-left: 30px;" lay-options="{type: '{$t.id}'}">
+                        <div class="text-lg layui-menu-body-title" style="color: #333333">
+                            {$t.title}<i class="layui-icon layui-icon-up"></i>
+                        </div>
+                        <ul>
+                            {volist name="t.news" id="tn"}
+                            <li lay-options="{id: {$tn.id}}" style="padding: 0;">
+                                <div class="layui-menu-body-title {if $tn.id==$Request.get.id}layui-menu-item-checked{/if}" style="padding: 10px;">{$tn.title}</div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </li>
+                    <li class="layui-menu-item-divider"></li>
+                    {/volist}
+                </ul>
+            </div>
+            <div style="padding-left: 25%;">
+                <section class="article-item padding" style="border-left: 1px solid #e8e9eb;">
+                    <aside class="title" style="line-height:1.5;">
+                        <p class="text-xxl">{$news.title}</p>
+                        <p class="text-df">
+                            <small>
+                                作者：{$news.author}
+                            </small>
+                            <small class="padding">围观群众：<i class="readcount">{$news.pv}</i></small>
+                            <small class="padding">更新于 <label>{:date('Y-m-d H:i:s',$news.createtime)}</label> </small>
+                        </p>
+                    </aside>
+                    <div class="time mt10" style="padding-bottom:0;">
+                        <span class="day">{:date('d',$news.createtime)}</span>
+                        <span class="month">{:date('m',$news.createtime)}<small class="fs-14">月</small></span>
+                        <span class="year">{:date('Y',$news.createtime)}</span>
+                    </div>
+                    <div class="content artiledetail" style="padding-bottom: 20px;">
+                        {if $news} {:$news.content}{else}文章不存在！{/if}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="layui-panel  radius-10" style="float: right;width: 80%;">
+
+    </div>
+    </div>
+</div>
+<script>
+    layui.use(['dropdown', 'util'], function(){
+        var dropdown = layui.dropdown ,util = layui.util ,$ = layui.jquery;
+
+        //菜单点击事件
+        var newsUrl = '{:url("index/news")}';
+        dropdown.on('click(menu-main)', function(options){
+            window.location.href = newsUrl + '?id=' + options.id;
+        });
+    });
+</script>
+{/block}

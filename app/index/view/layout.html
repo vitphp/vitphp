@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=0">
+		<title>后台管理 - {$system_site.title|default=""}</title>
+		<meta name="keywords" content="{$system_site.keywords|default=''}" />
+		<meta name="description" content="{$system_site.description|default=''}"/>
+		<link rel="stylesheet" type="text/css" href="__ROOT__/static/plugs/layui/css/layui.css" />
+		<link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+		<link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+		<link rel="stylesheet" href="__ROOT__/static/theme/css/admin.css?v=20211010" media="all">
+		<link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css" media="all">
+		<script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+		<style type="text/css"></style>
+		<script>
+			$(function () {
+            $('.layui-nav a').click(function (e) {
+                if ($(this).next().length !== 0){
+                    return;
+                }
+                var url = $(this).attr('_href');
+                if (url === "#"){
+                    return;
+                }
+                $("#vitphp-main").attr('src',url);
+            })
+        })
+    </script>
+		<style type="text/css">
+		</style>
+	</head>
+	<style type="text/css" id="vitadmin_theme"></style>
+	<body>
+		<div id="vit_style">
+			<div id='vit_app' class="vit-layout-side vit-layout-black vit-left-menu">
+				<div class="layui-side-scroll">
+					<div class="layui-logo" lay-href="">
+						{if $system_site}
+						<img  class="logo" src="{$system_site.admin_logo|default='__ROOT__/static/theme/images/minilogo.png'}"/>{else}
+						<img  class="logo" src="__ROOT__/static/theme/images/minilogo.png" /> {/if}
+						<span class="logo-size">{$system_site.name|default="VitPhp"}</span>
+					</div>
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-left layui-nav-tree" lay-filter="layui-nav-left">
+						{volist name="menus" id="one"}
+						<li class="layui-nav-item layui-nav-itemed" >
+							<a href="javascript:;" _href="{$one.url}" {empty name="one._child"}class="link-active" data-type="one" data-ids="{$one.id}" data-title="{$one.title}" lay-href="{$one.url}"{/empty} data-id="{$one.id}"  >
+								<i class="viticon {$one.icon} title-icon"></i>
+								<cite>{$one.title}</cite>
+							</a>
+							{notempty name="one._child"}
+							<dl class="layui-nav-child">
+								{volist name="one._child" id="two"}
+								<dd {empty name="two._child"}class="link-active" data-ids="{$two.id}" data-type="two" data-title="{$two.title}" lay-href="{$two.url}"{/empty} >
+									<a href="javascript:;" _href="{$two.url}"  data-id="{$two.id}"  >
+										<i class="viticon {$two.icon} title-icon"></i>
+										<cite>{$two.title}</cite>
+									</a>
+									{notempty name="two._child"}
+									<ol class="layui-nav-child">
+										{volist name="two._child" key="k" id="three"}
+										<li class="link-active" lay-href="{$three.url}" data-ids="{$three.id}" data-type="three" data-title="{$three.title}">
+											<i class="{$three.icon} title-icon"></i>
+											<a href="javascript:;" _href="{$three.url}" data-id="{$three.id}">
+												<cite>{$three.title}</cite>
+											</a>
+										</li>
+										{/volist}
+									</ol>
+									{/notempty}
+								</dd>
+								{/volist}
+							</dl>
+							{/notempty}
+						</li>
+						{/volist}
+					</ul>
+				</div>
+			</div>
+			<div class="layui-body vit-right-content active" id="vit_app_body">
+				<div class="layui-header">
+					<ul class="layui-nav layui-layout-left" lay-filter="layadmin-layout-left">
+						<li class="layui-nav-item layadmin-flexible" lay-unselect="">
+							<a href="javascript:;" layadmin-event="flexible">
+								<i class="viticon vit-icon-shouqi" id="vit_app_flexible"></i>
+							</a>
+						</li>
+						<li class="layui-nav-item " lay-unselect="">
+							<a href="javascript:;" id="refresh" layadmin-event="refresh">
+								<i class="viticon vit-icon-shuaxin"></i>
+							</a>
+						</li>
+						<li class="layui-nav-item " lay-unselect="">
+							<a href="/" target="_blank" layadmin-event="refresh">访问主页</a>
+						</li>
+					</ul>
+					<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+						<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+							<a href="javascript:void(0)" id="fullScreenBut" onclick="fullScreen('fullScreenBut')" onmouseleave="layer.closeAll('tips')">
+								<i class="viticon vit-icon-quanping"></i>
+							</a>
+						</li>
+						<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+							<a href="javascript:;" layadmin-event="theme">
+								<i class="viticon vit-icon-yanse"></i>
+							</a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;">
+								<img class="vit-nav-img" src="{$Request.session.admin.headimg|default='__ROOT__/static/theme/images/portrait.png'}">
+								{$Request.session.admin.username}
+							</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="javascript:;" data-modal='{:tourl("/index/my/index")}' data-title="个人资料设置"><i class="viticon vit-icon-shezhi"></i> 个人中心</a>
+								</dd>
+								<dd>
+									<a href="javascript:;" data-modal='{:tourl("/index/my/edit_pass")}' data-title="修改密码"><i class="viticon vit-icon-mima"></i> 修改密码</a>
+								</dd>
+								{if auth("index/admin/clear")}
+								<dd>
+									<a href="javascript:;" data-post="{:url('admin/clear')}" data-param="" data-confirm="你确认要清理缓存吗"><i class="viticon vit-icon-qingli"></i> 清理缓存</a>
+								</dd>
+								{/if}
+								<dd>
+									<a href="/index/login/logout"><i class="viticon vit-icon-tuichu"></i> 退出登录</a>
+								</dd>
+							</dl>
+						</li>
+
+					</ul>
+				</div>
+				<div class="vit-body">
+					<div class="layui-tab pmdefault" lay-filter="tables" lay-allowclose="true">
+						<ul class="layui-tab-title"></ul>
+						<div class="layui-tab-content">
+						</div>
+					</div>
+					<div class="close layui-icon-down layui-icon"></div>
+					<div id="right" class="right layui-icon-next layui-icon"></div>
+					<div id="left" class="left layui-icon-prev layui-icon"></div>
+				</div>
+			</div>
+			<!--用于选色效果-->
+			<div id='setbgcolor' style="display:none">
+				<div class="layui-layer-shade" id="setbgcolorshade" style="z-index: 19891016; background-color: rgb(0, 0, 0); opacity: 0.3;"></div>
+				<div class="layui-layer-color">
+					<div class='layui-layer-content'>
+						<div class="layui-card-header"> 配色方案 </div>
+						<div class="layui-card-body layadmin-setTheme">
+							<ul class="layadmin-setTheme-color" id='ChangeColor'>
+								<li layadmin-event="setTheme" data-index="0" data-alias="default" title="default">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #191a23;">
+										<div class="layadmin-setTheme-logo">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="1" data-alias="dark-blue" title="dark-blue">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #03152A;">
+										<div class="layadmin-setTheme-logo">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="2" data-alias="coffee" title="coffee">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #2E241B;">
+										<div class="layadmin-setTheme-logo">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="3" data-alias="purple-red" title="purple-red">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #50314F;">
+										<div class="layadmin-setTheme-logo">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="4" data-alias="ocean" title="ocean">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #344058;">
+										<div class="layadmin-setTheme-logo" style="background-color: #1E9FFF;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="5" data-alias="green" title="green">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #3A3D49;">
+										<div class="layadmin-setTheme-logo" style="background-color: #2F9688;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="6" data-alias="red" title="red">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #20222A;">
+										<div class="layadmin-setTheme-logo" style="background-color: #F78400;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="7" data-alias="fashion-red" title="fashion-red">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #28333E;">
+										<div class="layadmin-setTheme-logo" style="background-color: #AA3130;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="8" data-alias="classic-black" title="classic-black">
+									<div class="layadmin-setTheme-header">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #24262F;">
+										<div class="layadmin-setTheme-logo" style="background-color: #3A3D49;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="9" data-alias="green-header" title="green-header">
+									<div class="layadmin-setTheme-header" style="background-color: #2F9688;">
+									</div>
+									<div class="layadmin-setTheme-side">
+										<div class="layadmin-setTheme-logo" style="background-color: #226A62;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="10" data-alias="ocean-header" title="ocean-header">
+									<div class="layadmin-setTheme-header" style="background-color: #1E9FFF;">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #344058;">
+										<div class="layadmin-setTheme-logo" style="background-color: #0085E8;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="11" data-alias="classic-black-header" title="classic-black-header">
+									<div class="layadmin-setTheme-header" style="background-color: #393D49;">
+									</div>
+									<div class="layadmin-setTheme-side">
+										<div class="layadmin-setTheme-logo">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="12" data-alias="purple-red-header" title="purple-red-header">
+									<div class="layadmin-setTheme-header" style="background-color: #50314F;">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #50314F;">
+										<div class="layadmin-setTheme-logo" style="background-color: #50314F;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="13" data-alias="fashion-red-header" title="fashion-red-header">
+									<div class="layadmin-setTheme-header" style="background-color: #AA3130;">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #28333E;">
+										<div class="layadmin-setTheme-logo" style="background-color: #28333E;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="14" data-alias="green-header" title="green-header">
+									<div class="layadmin-setTheme-header" style="background-color: #009688;">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #28333E;">
+										<div class="layadmin-setTheme-logo" style="background-color: #009688;">
+										</div>
+									</div>
+								</li>
+								<li layadmin-event="setTheme" data-index="15" data-alias="green-header" title="green-header">
+									<div class="layadmin-setTheme-header" style="background-color: #fff;">
+									</div>
+									<div class="layadmin-setTheme-side" style="background-color: #fff;">
+										<div class="layadmin-setTheme-logo" style="background-color: #fff;">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--辅助作用一般用于手机遮罩层-->
+			<div class="layui-layer-shade mobilenav" id="mobilenav" onclick="clearmobilenav()" style="z-index: 998; background-color: rgb(0, 0, 0); opacity: 0.3;display:none"></div>
+			<script src="__ROOT__/static/plugs/layui/layui.js"></script>
+			<script src="__ROOT__/static/theme/js/admin.js?v=20211010"></script>
+			<script src="__ROOT__/static/theme/js/common.js?v={:time()}"></script>
+			<!--您的Layui代码start-->
+			<script type="text/javascript">
+				$(function() {
+					function initiframe() {
+						$("#vitphp-main").height('calc(100vh - 66px)');
+						$("#vitphp-main").width('100%');
+					}
+					initiframe();
+					$(window).resize(function(e) {
+						initiframe();
+					})
+				})
+				layui.config({
+					base: '__ROOT__/static/theme/js/',
+					version: "20220405"
+					// version: "{:time()}"
+				}).use(['vitphp']);
+				// 图片404默认显示图片
+				$(function() {
+					document.addEventListener("error", function (e) {
+						var elem = e.target;
+						if (elem.tagName.toLowerCase() == 'img') {
+							elem.src = "__ROOT__/static/theme/images/img404.png";
+						}
+					}, true);
+				});
+			</script>
+		</div>
+	</body>
+</html>

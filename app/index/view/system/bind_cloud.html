@@ -1,0 +1,61 @@
+
+{block name="content"}
+<div class="layui-card">
+    <div class="vit-layout-fluid">
+        <form class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">当前域名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" disabled value="{$Request.host}" lay-verify="required" class="layui-input layui-bg-gray">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">appid</label>
+                <div class="layui-input-block">
+                    <input type="text" name="appid" value="" lay-verify="required" lay-reqText="请输入appid" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">appkey</label>
+                <div class="layui-input-block">
+                    <input type="text" name="appkey" value="" lay-verify="required" lay-reqText="请输入appkey" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="bindCloud">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form, layer = layui.layer;
+        form.on('submit(bindCloud)', function(data){
+            layer.load();
+            $.ajax({
+                type: "POST",
+                url: "{:url('index/system/bindCloud')->build()}",
+                data: data.field,
+                dataType: "json",
+                success: function (res) {
+                    layer.closeAll('loading');
+                    if(res.code==1){
+                        layer.msg(res.msg || '绑定成功', {time: 1000}, function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg || '绑定失败');
+                    }
+                },
+                error: function(e){
+                    layer.closeAll('loading');
+                    layer.msg('网络异常');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

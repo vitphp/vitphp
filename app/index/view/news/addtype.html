@@ -1,0 +1,15 @@
+<div class="vit-layout-fluid">
+    <form class="layui-form" action="addtype?id={:input('id')}"  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="text-red">*</span>分类名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>

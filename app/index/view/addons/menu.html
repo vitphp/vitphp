@@ -1,0 +1,40 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-tab-content" style="padding-bottom: 100px">
+  <div class="layui-form layui-form-pane" action="">
+    <div class="layui-form-item">
+      <div style="float: right;">
+        <a href="/index/addons/list.html" class="layui-form-label margin-lr" style="width: 125px;">返回应用列表</a>
+        <button data-modal="editmenu?ide={:input('ide')}" data-title="添加菜单" class="layui-form-label margin-lr">添加菜单</button>
+      </div>
+    </div>
+
+    <table class="layui-table" lay-size="lg">
+      <thead>
+      <tr>
+        <th>名称</th>
+        <th>URL路径</th>
+        <th>图标</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      {volist name='menu' id='menu'}
+      <tr>
+        <th>{$menu.title}</th>
+        <th>{$menu.url|default=''}</th>
+        <th><i class="{$menu.icon|default=''}"></i></th>
+        <th>
+          <button data-modal='{:url("editmenu")}?id={$menu.id}&ide={$menu.type}' data-title="编辑菜单" class="layui-btn layui-btn-normal layui-btn-xs" >编辑菜单</button>
+          <button class="layui-btn layui-btn-primary layui-btn-xs" href="javascript:;"
+                  data-confirm="确定要删除吗！" data-post='{:url("del")}' data-param="ids={$menu.id}">删除
+          </button>
+        </th>
+      </tr>
+      {/volist}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{/block}

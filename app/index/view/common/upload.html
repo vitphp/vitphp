@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=20211010" media="all">
+</head>
+<body>
+ <div id="vit-body-menu">
+    <div>
+       <div class="layui-card">
+           <div class="layui-card-body" style="overflow: hidden;">
+                <div class="layui-card-body">
+{block name="table"}
+<style type="text/css">
+    @media screen and (max-width: 700px) {
+        .layui-col-xs12{
+            width: 50%;
+        }
+    }
+	.uplaodImg {
+		background: #eee;
+		display: flex;
+		position: relative;
+	}
+
+	.uplaodImg img {
+		width: 100%;
+		height: 100px;
+	}
+
+	.uplaodImg span {
+		position: absolute;
+		height: 30px;
+		background: rgba(0, 0, 0, .5);
+		color: #fff;
+		padding: 0 10px;
+		line-height: 30px;
+		white-space: nowrap;
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+
+	.uplaodImg.active:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		color: #fff;
+		text-align: center;
+		bottom: 0;
+		background: rgba(0, 0, 0, .5);
+	}
+
+	.uplaodImg.active .layui-icon.layui-icon-ok {
+		display: block;
+		text-align: center;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		color: #fff;
+		font-size: 24px;
+		z-index: 999;
+	}
+
+	.uplaodImg .layui-icon.layui-icon-ok {
+		display: none;
+	}
+	#delete2{
+		display: none;
+	}
+</style>
+<div style="margin-bottom: 10px;">
+	<button type="button" class="layui-btn layui-btn-normal" id="test2">上传图片</button>
+	<button type="button" class="layui-btn layui-btn-dange" id="delete2">删除</button>
+</div>
+<div style="border: 1px solid #eee;padding: 20px;">
+	<div class="layui-row layui-col-space20">
+	</div>
+</div>
+<div>
+	<div id="test1"></div>
+</div>
+<div>
+    <input type="hidden" id="confirm">
+</div>
+<script src="__ROOT__/static/plugs/layui/layui.js"></script>
+
+<script>
+    function unique1(arr){
+        var hash=[];
+        for (var i = 0; i < arr.length; i++) {
+            if(hash.indexOf(arr[i])==-1){
+                hash.push(arr[i]);
+            }
+        }
+        return hash;
+    }
+    function getQueryString(name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURIComponent(r[2]);
+        return null;
+    }
+
+	var callbackdata = function () {
+        var imgsrc = $('#confirm').attr("data-imgsrc");
+        var imgInputSrc = $("#confirm").attr('data-inputSrc');
+        var data = {
+            imgsrc: imgsrc,
+            imgInputSrc: imgInputSrc
+        };
+        return data;
+    }
+	layui.use(['laypage', 'layer', 'upload'], function() {
+		var laypage = layui.laypage,
+			layer = layui.layer;
+		var upload = layui.upload;
+
+		// 删除图片
+		$("#delete2").click(function(){
+			var id = $('#delete2').attr('data-id');
+            let ids =( $("#delete2").attr('data-id') || '').split(',');
+			$.post("{:url('index/api.attachment/delimage')}?session={:input('session')}&storage_id={:input('storage_id')}",{id: id}).then(function(res){
+			    if(res.code == 1){
+			        layer.msg(res.msg);
+                    $('.layui-row.layui-col-space20 .uplaodImg').each(function(){
+                        var IDS =  $(this).attr('data-id')
+                        if(ids.indexOf(IDS) !== -1){
+                            $(this).parent('.grid-demo').parent('.layui-imgs').remove()
+                        }
+                    })
+                    $('#delete2').attr('data-id','');
+			        return false;
+			    }else{
+			        layer.msg(res.msg);
+			        return false;
+			    }
+			});
+		})
+		// 图片列表
+		$.post("{:url('index/api.attachment/imagelist')}?session={:input('session')}&storage_id={:input('storage_id')}",{}).then(function(res){
+			 let {data, total, per_page} = res
+		    if(data&&data.length>0){
+					let div = ''
+					data&&data.forEach(item =>{
+						div += '<div class="layui-imgs layui-col-xs12 layui-col-sm3 layui-col-md3">' +
+							'		<div class="grid-demo grid-demo-bg1">' +
+							'				<div class="uplaodImg" data-id="'+item.id+'" data-inputSrc="'+item.fileurl+'"  data-name="'+item.filename+'">' +
+							'						<img src="' + item.imgUrl + '" >' +
+							'						<span>' + item.filename + '</span>' +
+							'						<i class="layui-icon layui-icon-ok"></i>' +
+							'				</div>' +
+							'		</div>' +
+							'</div> </div>';
+					})
+					$('.layui-row.layui-col-space20').append(div)
+					laypage.render({
+					    elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+					    ,count: total,//数据总数，从服务端得到
+							theme: '#1E9FFF',
+							limit:per_page
+							,jump: function(obj, first){
+							    //obj包含了当前分页的所有参数，比如：
+							    //首次不执行
+							    if(!first){
+										$('.layui-row.layui-col-space20').empty();
+							      //do something
+										$.post("{:url('index/api.attachment/imagelist')}?session={:input('session')}&storage_id={:input('storage_id')}",{'page':obj.curr}).then(function(ress){
+											let {data, total, per_page} = ress
+											if(data&&data.length>0){
+												let div = ''
+												data&&data.forEach(item =>{
+													div += '<div class="layui-imgs layui-col-xs12 layui-col-sm3 layui-col-md3">' +
+														'		<div class="grid-demo grid-demo-bg1">' +
+														'				<div class="uplaodImg" data-id="'+item.id+'" data-inputSrc="'+item.fileurl+'" data-name="'+item.filename+'">' +
+														'						<img src="' + item.imgUrl + '" >' +
+														'						<span>' + item.filename + '</span>' +
+														'						<i class="layui-icon layui-icon-ok"></i>' +
+														'				</div>' +
+														'		</div>' +
+														'</div> </div>';
+												})
+												$('.layui-row.layui-col-space20').append(div)
+											}
+										})
+							    }
+							  }
+					  });
+		        return false;
+		    }else{
+		        //layer.msg(res.msg);
+		        return false;
+		    }
+		});
+		$(document).on('click', '.layui-row.layui-col-space20 .uplaodImg', function () {
+            var type = getQueryString('type');
+            // console.log(type);
+            //type == multi 为多选
+            if(type == 'multi')  {
+                $("#delete2").show();
+                let ids =( $("#delete2").attr('data-id') || '').split(',');
+                let active_id = $(this).attr('data-id');
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active')
+                    let newArray = []
+                    ids.forEach(function (d){
+                        if(d != active_id){
+                            newArray.push(d);
+                        }
+                    })
+                    ids = newArray;
+                }else{
+                    $(this).addClass('active');
+                    ids.push(active_id);
+                }
+                $("#delete2").attr('data-id', unique1(ids).join(','));
+            }else{
+                if ($(this).hasClass('active')) {
+                    $('#confirm').attr('data-imgsrc', '')
+                    $("#confirm").attr('data-inputSrc','');
+                    $("#delete2").attr('data-id', '')
+                    $("#delete2").hide();
+                } else {
+                    console.log($(this).find('img').attr('src'), $(this).attr('data-inputSrc'));
+                    $('#confirm').attr('data-imgsrc', $(this).find('img').attr('src'))
+                    $("#confirm").attr('data-inputSrc',$(this).attr('data-inputSrc'));
+                    $("#delete2").attr('data-id', $(this).attr('data-id'))
+                    $("#delete2").show();
+                }
+                $(this).addClass('active').parent('.grid-demo').parent('.layui-imgs').siblings('.layui-imgs').children('.grid-demo').children('.uplaodImg').removeClass('active')
+            }
+
+		})
+		//执行实例
+		let name =''
+        var uploadapi = getQueryString('api')
+        if (!uploadapi){
+            uploadapi = '{:url("index/api.attachment/upload")}';
+        }
+	var uploadInst = [];
+	upload.render({
+			elem: '#test2',
+			url: uploadapi,
+			accept: 'images', //只允许传图片
+            acceptMime: '{$imgAcceptMime}',
+            data:{
+			    min: getQueryString('min')
+            },
+            multiple: true,
+			auto: false,
+            choose:function(obj){
+				$(".layui-upload-file").val("")
+                var files = uploadInst = obj.pushFile();
+                var filesArry = [];
+                for (var key in files) { //将上传的文件转为数组形式
+                    filesArry.push(files[key])
+                }
+                //getQueryString('type');
+                // var index = filesArry.length - 1;
+                // var file = filesArry[index]; //获取最后选择的图片,即处理多选情况
+                // if (navigator.appName == "Microsoft Internet Explorer" && parseInt(navigator.appVersion.split(";")[1]
+                //     .replace(/[ ]/g, "").replace("MSIE", "")) < 9) {
+                //   return obj.upload(index, file)
+                // }
+                let min = getQueryString('min');
+                if(min == 'false' || min == '') {
+                    console.log("不压缩图片");
+                }else{
+                    console.log("压缩图片");
+                }
+                filesArry.forEach((item,index) =>{
+                    if(min == 'false' || min == ''){
+                        console.log("直接上传");
+                        obj.upload(index, item);
+                    }else canvasDataURL(item, function (blob) {
+                        console.log("压缩之后上传");
+                        var aafile = new File([blob], item.name, {
+                            type: item.type
+                        })
+                        var isLt1M;
+                        if (item.size < aafile.size) {
+                            isLt1M = item.size
+                        } else {
+                            isLt1M = aafile.size
+                        }
+
+                        if (isLt1M / 1024 / 1024 > 2) {
+                            return layer.alert('图片压缩之后还是大于2M，请压缩之后上传！');
+                        } else {
+                            if (item.size < aafile.size) {
+                               return obj.upload(index, item)
+                            }
+                            obj.upload(index, aafile)
+                        }
+                    })
+                })
+            },
+			before: function(obj) {
+				obj.preview(function(index, file, result){
+					//obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+					delete uploadInst[index]; //删除列表中对应的文件，一般在某个事件中使用
+				});
+			},
+			done: function(res) {
+				console.log(res)
+				if (res.code == 0) {
+				    let div = '';
+				    for (let img of res.data){
+                        html = '<div class="layui-imgs layui-col-xs12 layui-col-sm3 layui-col-md3">' +
+                            '		<div class="grid-demo grid-demo-bg1">' +
+                            '				<div class="uplaodImg" data-id="'+img.id+'" data-inputSrc="'+img.fileurl+'">' +
+                            '						<img src="' + img.src + '">' +
+                            '						<span>' + img.name + '</span>' +
+                            '						<i class="layui-icon layui-icon-ok"></i>' +
+                            '				</div>' +
+                            '		</div>' +
+                            '</div> </div>';
+                        div += html;
+                    }
+					$('.layui-row.layui-col-space20').prepend(div)
+				}
+				//上传完毕
+			},
+            allDone: function(obj){ //当文件全部被提交后，才触发
+				console.log(obj)
+				
+			  $(".layui-upload-file").val("")
+            }
+		});
+
+		$('#confirm').click(function() {
+		    return false;
+			let url = $(this).attr('data-imgsrc')
+			let fileUrl = $(this).attr('data-inputSrc')
+			if (!url) {
+				layer.msg('请选择图片');
+				return false
+			}
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.layer.close(index);
+            var input_id = getQueryString('input_id');
+            var pre_id = getQueryString('pre_id');
+            console.log('===', url, fileUrl);
+			$(window.parent.document).find('body').attr('data-id', url)
+			$(window.parent.document).find('#'+input_id).val(fileUrl)
+			$(window.parent.document).find('#'+pre_id).attr('src', url)
+		})
+    
+		$("#cancel").click(function(){
+			 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			 parent.layer.close(index);
+		})
+		var imgwidth = "{:getSetting('imgwidth')}";
+		console.log("压缩width", imgwidth);
+		function canvasDataURL(file, callback) { //压缩转化为base64
+			var reader = new FileReader()
+			reader.readAsDataURL(file)
+			reader.onload = function(e) {
+				const img = new Image()
+				const quality = 0.5; // 图像质量
+				const canvas = document.createElement('canvas')
+				const drawer = canvas.getContext('2d')
+				img.src = this.result
+				img.onload = function() {
+					canvas.width = imgwidth
+					canvas.height = img.height/(img.width/imgwidth);
+					console.log("切宽",canvas.width)
+					console.log("切高",canvas.height)
+					drawer.drawImage(img, 0, 0, canvas.width, canvas.height)
+					convertBase64UrlToBlob(canvas.toDataURL(file.type, quality), callback);
+				}
+			}
+		}
+
+		function convertBase64UrlToBlob(urlData, callback) { //将base64转化为文件格式
+			const arr = urlData.split(',')
+			const mime = arr[0].match(/:(.*?);/)[1]
+			const bstr = atob(arr[1])
+			let n = bstr.length
+			const u8arr = new Uint8Array(n)
+			while (n--) {
+				u8arr[n] = bstr.charCodeAt(n)
+			}
+			callback(new Blob([u8arr], {
+				type: mime
+			}));
+		}
+	})
+</script>
+{/block}
+</div>
+            </div>
+
+        </div>    </div>
+</div>
+{block name="script"}
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="__ROOT__/static/plugs/layui/layui.js"></script>
+<script src="__ROOT__/static/theme/js/common.js"></script>
+<script>
+    layui.config({
+        base: '__ROOT__/static/theme/js/',
+    }).use(['vitphp']);
+</script>
+{/block}
+</body>
+</html>

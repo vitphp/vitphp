@@ -1,0 +1,78 @@
+<style>
+    /*.layui-input{height:30px;} !* layui-input 默认太高了，这里固定高度*!*/
+    /*label.required:after {   !* 给红色的必填项打红色星号（文字后）如果打前面用before*!*/
+    /*    content: ' *';*/
+    /*    color: red;*/
+    /*}*/
+</style>
+<div class="vit-layout-fluid">
+    <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label required"><span class="text-red">*</span>原密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" lay-verify="password" autocomplete="off" placeholder="请输入原密码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required"><span class="text-red">*</span>新密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="newpassword" lay-verify="password" autocomplete="off" placeholder="请输入新密码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required"><span class="text-red">*</span>重复密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="repassword" lay-verify="password" autocomplete="off" placeholder="请重复密码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="submit"  type="button" >立即提交</button>
+                </div>
+            </div>
+    </form>
+</div>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form,layer = layui.layer;
+        //自定义验证规则
+        form.verify({
+            password: function(value){
+                if(value.length ==0){
+                    return '请输入必填项';
+                }
+                if(value.length < 5 || value.length > 25){
+                    return '密码长度必须5-25位之间';
+                }
+            }
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+        form.on('submit(submit)', function(data){
+            pass_save(data.field);
+            return false;
+        });
+
+    });
+    //提交
+    function pass_save(data) {
+
+
+        $.post("{:url('index/my/pass_save')}", data).then(function(res){
+            console.log(res);
+            if(res.code == 1){
+                layer.msg(res.msg);
+                setTimeout(function(){
+                    location.reload();
+                },1500);
+                return false;
+            }else{
+                layer.msg(res.msg);
+
+                return false;
+            }
+        });
+    }
+</script>

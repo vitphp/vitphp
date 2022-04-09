@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/index.css?v=202110311" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=20211010" media="all">
+  <script type="text/javascript" src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+  <script src="__ROOT__/static/plugs/layui/layui.js"></script>
+  <script src="__ROOT__/static/theme/js/index.js"></script>
+</head>
+<style type="text/css" id="vitadmin_theme"></style>
+<body> 
+<div class="layui-layout layui-layout-admin">
+  <div class="vit-header">
+    <div class="vit-buju">
+      <div class="vit-logo">
+        {if $system_site}
+        <img class="logo" src="{$system_site.admin_logo|default='__ROOT__/static/theme/images/minilogo.png'}"/>{else}
+        <img class="logo" src="__ROOT__/static/theme/images/minilogo.png" /> {/if}
+        <span class="logo-size text-black">{$system_site.name|default='VitPhp'}</span>
+      </div>
+      <!-- 头部区域（可配合layui 已有的水平导航） -->
+      <ul class="layui-nav vit-nav-right" style="left: 200px;">
+        {volist name="menus" id="one"}
+            <li class="layui-nav-item layui-hide-xs layui-hide layui-show-md-inline-block">
+              {if isset($one._child)}
+              <a href="javascript:;">{$one.title}</a>
+                      <dl class="layui-nav-child">
+                        {foreach $one._child as $k=>$child}
+                        <dd><a href="{$child.url}" {if $child.open ==1} target="_blank"{/if}>{$child.title}</a></dd>
+                        {/foreach}
+                      </dl>
+              {else}
+                <a href="{$one.url}" {if $one.open ==1} target="_blank"{/if}>{$one.title}</a>
+              {/if}
+            </li>
+        {/volist}
+        </li>
+      </ul>
+      <ul class="layui-nav vit-nav-right">
+        <li style="padding-left: 70px;" class="layui-nav-item layui-hide-xs"></li>
+        {if session('admin.id')}
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img class="layui-nav-img" src="{$Request.session.admin.headimg|default='__ROOT__/static/theme/images/portrait.png'}">
+            {$Request.session.admin.username}
+          </a>
+          <dl class="layui-nav-child">
+            <dd>{if $Request.session.admin.pid}<a href="/index/addons/index?pid={$Request.session.admin.pid}">{else}<a href="/index/admin/index">{/if}<i class="viticon vit-icon-shezhi"></i> 控制台</a></dd>
+            <dd><a href="/index/login/logout"><i class="viticon vit-icon-tuichu"></i> 退出登录</a></dd>
+          </dl>
+        </li>
+        {else}
+        <li class="layui-nav-item">
+          <a  href="/index/login/index"><i class="layui-icon layui-icon-username"></i> 立即登录</a>
+        </li>
+        {/if}
+        <!-- 移动端显示 -->
+        <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+          <i class="layui-icon layui-icon-spread-left"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+  {if $system_site}
+  {if $system_site.kf_qq}
+<!--  客服-->
+  <style>
+    .kefu{
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      position: fixed;
+      bottom: 100px;
+      right: 40px;
+      box-shadow: 0 5px 10px 0 rgba(35,50,56,.3);
+      z-index: 700;
+      text-align: center;
+      line-height: 60px;
+    }
+  </style>
+  <div class="kefu">
+   <a href="tencent://message/?uin={$system_site.kf_qq}&Menu=yes"> <i class="text-green viticon vit-icon-xinxifill" style="font-size: 45px"></i></a>
+  </div>
+<!--  客服结束-->
+  {/if}{/if}
+  <div class="vit-body layui-bg-gray" style="min-height: calc(100vh - 127px);">
+    {block name="content"}{/block}
+  </div>
+    <div class="vit-foot layui-col-xs12">
+      <!-- 底部固定区域 -->
+
+      <div>{$system_site.foot_top|default=""|raw}</div>
+      <div>{$system_site.foot_bottom|default=""|raw}
+        <span class="padding-left">
+          {if $system_site}{if $system_site.icpbeian}备案号：<a href="https://beian.miit.gov.cn/" target="_blank">{$system_site.icpbeian|default=""}</a>{/if}{/if}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    layui.use('carousel', function(){
+      var carousel = layui.carousel;
+      //建造实例
+      carousel.render({
+        elem: '#test1'
+        ,width: '100%' //设置容器宽度
+        ,height:'50vh'
+        ,arrow: 'always' //始终显示箭头
+        //,anim: 'updown' //切换动画方式
+      });
+    });
+  </script>
+</body>
+
+</html>

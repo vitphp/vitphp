@@ -1,0 +1,27 @@
+<div class="vit-layout-fluid">
+  <form class="layui-form" action="editmenu?id={:input('id')}&ide={:input('ide')}"  method="post">
+    <div class="layui-form-item">
+      <label class="layui-form-label">菜单名称</label>
+      <div class="layui-input-block">
+        <input type="text" name="title" required="" lay-verify="required" value="{$menu.title|default=''}" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">url路径</label>
+      <div class="layui-input-block">
+        <input type="text" name="url" required="" lay-verify="required" value="{$menu.url|default=''}" placeholder="请输入url路径" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">图标</label>
+      <div class="layui-input-block">
+        {form:icon name="icon" value="$menu.icon??''" /}
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="demo1">立即提交</button>
+      </div>
+    </div>
+  </form>
+</div>

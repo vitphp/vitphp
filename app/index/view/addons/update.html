@@ -1,0 +1,24 @@
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" id="subForm"  action="edit?id={:input('id')}" method="post">
+            <input type="hidden" name="customPrice" value="" id="customPriceId">
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" id="name" value="{$addons.name|default=''}" required="" lay-verify="required" placeholder="请输入应用名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用LOGO</label>
+                <div class="layui-input-block">
+                    {form:image name="logo" value="$addons.logo??''" /}
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo3">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

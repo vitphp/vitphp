@@ -1,0 +1,728 @@
+<head>
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=20211010" media="all">
+    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+<style>
+    ul li {
+        width: 20%;
+        height: 65px;
+        display: block;
+        float: left;
+        margin-right: -1px;
+        margin-left: -2px;
+        margin-bottom: -2px;
+        cursor: pointer;
+        font-size: 14px;
+        overflow: hidden;
+        text-align: center;
+        padding: 15px 0 10px 0;
+        border: 1px solid #e2e2e2;
+        background-color: #efefef;
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        transition: all .2s linear;
+        -o-transition: all .2s linear;
+        -moz-transition: all .2s linear;
+        -webkit-transition: all .2s linear;
+    }
+    ul li i {
+        color: #333;
+        display: inline-block;
+        font-size: 30px !important;
+    }
+    ul li div {
+        color: #333;
+        height: 35px;
+        font-size: 13px;
+        line-height: 35px;
+        white-space: nowrap;
+    }
+</style>
+<body>
+    <ul class="site-doc-icon">
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jiafill"></i>
+            <div>vit-icon-jiafill</div>
+        </li>
+         <li onclick="checkIcon(this)">
+             <i class="viticon vit-icon-jia"></i>
+             <div>vit-icon-jia</div>
+         </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-anquan"></i>
+            <div>vit-icon-anquan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jia1"></i>
+            <div>vit-icon-jia1</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qingli"></i>
+            <div>vit-icon-qingli</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xiaoxifill"></i>
+            <div>vit-icon-xiaoxifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huo"></i>
+            <div>vit-icon-huo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fengge"></i>
+            <div>vit-icon-fengge</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenggefill"></i>
+            <div>vit-icon-fenggefill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xinfill"></i>
+            <div>vit-icon-xinfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yansefill"></i>
+            <div>vit-icon-yansefill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jingyin"></i>
+            <div>vit-icon-jingyin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kefufill"></i>
+            <div>vit-icon-kefufill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zhuyefill"></i>
+            <div>vit-icon-zhuyefill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zhankai"></i>
+            <div>vit-icon-zhankai</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dianxuan"></i>
+            <div>vit-icon-dianxuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-quanping"></i>
+            <div>vit-icon-quanping</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yanse"></i>
+            <div>vit-icon-yanse</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-diqiu"></i>
+            <div>vit-icon-diqiu</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-gouwuche"></i>
+            <div>vit-icon-gouwuche</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tuichuquanping"></i>
+            <div>vit-icon-tuichuquanping</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jianqie"></i>
+            <div>vit-icon-jianqie</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kuaijin"></i>
+            <div>vit-icon-kuaijin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xin"></i>
+            <div>vit-icon-xin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-gengduo"></i>
+            <div>vit-icon-gengduo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zhuye"></i>
+            <div>vit-icon-zhuye</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-guangbo"></i>
+            <div>vit-icon-guangbo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fangda"></i>
+            <div>vit-icon-fangda</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xiangji"></i>
+            <div>vit-icon-xiangji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shuaxin"></i>
+            <div>vit-icon-shuaxin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xinxi"></i>
+            <div>vit-icon-xinxi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tuichu"></i>
+            <div>vit-icon-tuichu</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jiangbei"></i>
+            <div>vit-icon-jiangbei</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dian"></i>
+            <div>vit-icon-dian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-vip"></i>
+            <div>vit-icon-vip</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-mima"></i>
+            <div>vit-icon-mima</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-bangdingshouji"></i>
+            <div>vit-icon-bangdingshouji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-remen"></i>
+            <div>vit-icon-remen</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huodong"></i>
+            <div>vit-icon-huodong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jianpan"></i>
+            <div>vit-icon-jianpan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xunzhang"></i>
+            <div>vit-icon-xunzhang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-suiji"></i>
+            <div>vit-icon-suiji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jiankong"></i>
+            <div>vit-icon-jiankong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-guanbi"></i>
+            <div>vit-icon-guanbi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yingxiao"></i>
+            <div>vit-icon-yingxiao</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xiazai"></i>
+            <div>vit-icon-xiazai</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tuding"></i>
+            <div>vit-icon-tuding</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-anzhuo"></i>
+            <div>vit-icon-anzhuo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-pinpairenzheng"></i>
+            <div>vit-icon-pinpairenzheng</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-duanxin"></i>
+            <div>vit-icon-duanxin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shangcheng"></i>
+            <div>vit-icon-shangcheng</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shangchuantupian"></i>
+            <div>vit-icon-shangchuantupian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tupianliebiao"></i>
+            <div>vit-icon-tupianliebiao</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-chenggong"></i>
+            <div>vit-icon-chenggong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huiyuan"></i>
+            <div>vit-icon-huiyuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-pdf"></i>
+            <div>vit-icon-pdf</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kuaidi"></i>
+            <div>vit-icon-kuaidi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dingdan"></i>
+            <div>vit-icon-dingdan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-biaoji"></i>
+            <div>vit-icon-biaoji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenxiangweixin"></i>
+            <div>vit-icon-fenxiangweixin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yulan"></i>
+            <div>vit-icon-yulan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jinrong"></i>
+            <div>vit-icon-jinrong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tupian"></i>
+            <div>vit-icon-tupian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tishi2"></i>
+            <div>vit-icon-tishi2</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-guanliyuan"></i>
+            <div>vit-icon-guanliyuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-lvhangxiang"></i>
+            <div>vit-icon-lvhangxiang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenxiangpengyouquan"></i>
+            <div>vit-icon-fenxiangpengyouquan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zuanshifill"></i>
+            <div>vit-icon-zuanshifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-nan"></i>
+            <div>vit-icon-nan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-nv"></i>
+            <div>vit-icon-nv</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fasong"></i>
+            <div>vit-icon-fasong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dashangfill"></i>
+            <div>vit-icon-dashangfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-bianji"></i>
+            <div>vit-icon-bianji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dayinji"></i>
+            <div>vit-icon-dayinji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fuzhi"></i>
+            <div>vit-icon-fuzhi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shezhi1"></i>
+            <div>vit-icon-shezhi1</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-chehui"></i>
+            <div>vit-icon-chehui</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-rili"></i>
+            <div>vit-icon-rili</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenxiang"></i>
+            <div>vit-icon-fenxiang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fanchuan"></i>
+            <div>vit-icon-fanchuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kaishi"></i>
+            <div>vit-icon-kaishi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qianjin"></i>
+            <div>vit-icon-qianjin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zuihouyigeshipin"></i>
+            <div>vit-icon-zuihouyigeshipin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-wenjianjia"></i>
+            <div>vit-icon-wenjianjia</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zhuomianfill"></i>
+            <div>vit-icon-zhuomianfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-ossziyuan"></i>
+            <div>vit-icon-ossziyuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-simka"></i>
+            <div>vit-icon-simka</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shijian"></i>
+            <div>vit-icon-shijian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yaoqingma"></i>
+            <div>vit-icon-yaoqingma</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-houtui"></i>
+            <div>vit-icon-houtui</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shangchuanfill"></i>
+            <div>vit-icon-shangchuanfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shandian"></i>
+            <div>vit-icon-shandian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tishi"></i>
+            <div>vit-icon-tishi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-wushouquan"></i>
+            <div>vit-icon-wushouquan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zuanshi"></i>
+            <div>vit-icon-zuanshi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenxiangQQ"></i>
+            <div>vit-icon-fenxiangQQ</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-luxiang"></i>
+            <div>vit-icon-luxiang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yun"></i>
+            <div>vit-icon-yun</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xieti"></i>
+            <div>vit-icon-xieti</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-suoxiao"></i>
+            <div>vit-icon-suoxiao</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-cuti"></i>
+            <div>vit-icon-cuti</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yunfill"></i>
+            <div>vit-icon-yunfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kefu"></i>
+            <div>vit-icon-kefu</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xiangjifill"></i>
+            <div>vit-icon-xiangjifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tishi1"></i>
+            <div>vit-icon-tishi1</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shanchu"></i>
+            <div>vit-icon-shanchu</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-fenxiangfill"></i>
+            <div>vit-icon-fenxiangfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jiangbeifill"></i>
+            <div>vit-icon-jiangbeifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yinletingzhi"></i>
+            <div>vit-icon-yinletingzhi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-tianjia"></i>
+            <div>vit-icon-tianjia</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jishu"></i>
+            <div>vit-icon-jishu</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dashang"></i>
+            <div>vit-icon-dashang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-luzhi"></i>
+            <div>vit-icon-luzhi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-saoyisao"></i>
+            <div>vit-icon-saoyisao</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yinlian"></i>
+            <div>vit-icon-yinlian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-diyigeshipin"></i>
+            <div>vit-icon-diyigeshipin</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-sousuo"></i>
+            <div>vit-icon-sousuo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-daima"></i>
+            <div>vit-icon-daima</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-wifi"></i>
+            <div>vit-icon-wifi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jingyinfill"></i>
+            <div>vit-icon-jingyinfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zanting"></i>
+            <div>vit-icon-zanting</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zhuomian"></i>
+            <div>vit-icon-zhuomian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huatongfill"></i>
+            <div>vit-icon-huatongfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shangchuan"></i>
+            <div>vit-icon-shangchuan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-guangbofill"></i>
+            <div>vit-icon-guangbofill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jingyin1fill"></i>
+            <div>vit-icon-jingyin1fill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-luxiangfill"></i>
+            <div>vit-icon-luxiangfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huatong"></i>
+            <div>vit-icon-huatong</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xinxifill"></i>
+            <div>vit-icon-xinxifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shoucangfill"></i>
+            <div>vit-icon-shoucangfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kefunvfill"></i>
+            <div>vit-icon-kefunvfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kuaidifill"></i>
+            <div>vit-icon-kuaidifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-caidan"></i>
+            <div>vit-icon-caidan</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shoucang"></i>
+            <div>vit-icon-shoucang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-caidanfill"></i>
+            <div>vit-icon-caidanfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-yinle"></i>
+            <div>vit-icon-yinle</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-quxiaoshoucang"></i>
+            <div>vit-icon-quxiaoshoucang</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-xiaoxi"></i>
+            <div>vit-icon-xiaoxi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-kefunv"></i>
+            <div>vit-icon-kefunv</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-huofill"></i>
+            <div>vit-icon-huofill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shouqi"></i>
+            <div>vit-icon-shouqi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-zitiyanse"></i>
+            <div>vit-icon-zitiyanse</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-jingyin1"></i>
+            <div>vit-icon-jingyin1</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-emoji"></i>
+            <div>vit-icon-emoji</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-dui"></i>
+            <div>vit-icon-dui</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-cuo"></i>
+            <div>vit-icon-cuo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-users"></i>
+            <div>vit-icon-users</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-pingguo"></i>
+            <div>vit-icon-pingguo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-github"></i>
+            <div>vit-icon-github</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qiandaifill"></i>
+            <div>vit-icon-qiandaifill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qiandai"></i>
+            <div>vit-icon-qiandai</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qianbaofill"></i>
+            <div>vit-icon-qianbaofill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qianbao"></i>
+            <div>vit-icon-qianbao</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-shezhi"></i>
+            <div>vit-icon-shezhi</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-user"></i>
+            <div>vit-icon-user</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-userfill"></i>
+            <div>vit-icon-userfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-phone"></i>
+            <div>vit-icon-phone</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-mobile"></i>
+            <div>vit-icon-mobile</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-phonefill"></i>
+            <div>vit-icon-phonefill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qianfill"></i>
+            <div>vit-icon-qianfill</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qian"></i>
+            <div>vit-icon-qian</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-weibo"></i>
+            <div>vit-icon-weibo</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-qq"></i>
+            <div>vit-icon-qq</div>
+        </li>
+        <li onclick="checkIcon(this)">
+            <i class="viticon vit-icon-weixin"></i>
+            <div>vit-icon-weixin</div>
+        </li>
+    </ul>
+<script>
+
+
+    $(".site-doc-icon").find('li').hover(function(){
+        $(this).css("background-color","yellow");
+    },function(){
+        $(this).css("background-color","#efefef");
+    });
+    function checkIcon(t) {
+        var className = $(t).find("i").attr("class");
+        var checkId = "{:input('checkId')}";
+        var inputId = "{:input('inputId')}";
+        var check = "#"+checkId;
+        var inputId = "#"+inputId;
+        console.log(inputId);
+         parent.$(check).find('i').attr("class",className);
+        parent.$(inputId).val(className);
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);//关闭弹出的子页面窗口
+
+    }
+</script>
+</body>

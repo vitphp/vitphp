@@ -1,0 +1,52 @@
+<div class="vit-layout-fluid">
+    <form class="layui-form" data-form='{:url("$classuri/create_user")}'>
+<!--    <form class="layui-form" data-form='{:request()->url()}'>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="text-red">*</span>用户名
+            </label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <input type="text" id="username" name="username" required="" lay-verify="required" {if isset($vo.id)}disabled{/if}
+                value="{$vo.username|default=''}" class="layui-input">
+            </div>
+        </div>
+        {if !isset($vo.id)}
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="text-red">*</span>密码
+            </label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <input type="text" id="password" name="password" required="" lay-verify="required"
+                       value="{$vo.username|default=''}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="text-red">*</span>重复密码
+            </label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <input type="text" id="repassword" name="repassword" required="" lay-verify="required" {if isset($vo.id)}disabled{/if}
+                value="{$vo.username|default=''}" class="layui-input">
+            </div>
+        </div>
+        {/if}
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+                {volist name="roles" id="role"}
+                <input type="checkbox" name="role[{$role.id}]" title="{$role.title}" {if in_array($role.id,$access)}checked{/if}>
+                {/volist}
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-xs10 layui-col-xs-offset2">
+            {if isset($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" lay-submit="">确定</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use('form',function () {
+        layui.form.render();
+    })
+</script>

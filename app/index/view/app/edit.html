@@ -1,0 +1,58 @@
+
+<div class="vit-layout-fluid" style="padding-bottom: 0">
+    <form class="layui-form" action="edit?id={:input('id')}"  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="name" value="{if isset($app)}{$app.name}{/if}" autocomplete="off" placeholder="请输入项目名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目LOGO</label>
+            <div class="layui-input-block">
+                {if isset($app)}
+                {form:image name="logo" value="$app.logo" /}
+                {else}
+                {form:image name="logo" value="" /}
+                {/if}
+            </div>
+        </div>
+        {if $Request.session.admin.id == 1}
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">项目管理员</label>
+                <div class="layui-input-inline">
+                    <select name="uid" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        {foreach $user as $k=>$v}
+                        <option value="{$v.id}" {if $v.id==$app.uid}selected{/if}>{$v.username}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">到期时间</label>
+                <div class="layui-input-inline">
+                    {if  $app }
+                      {form:time name="dq_time" value="$app.dq_time" type='datetime' range='false' /}
+                    {else}
+                      {form:time name="dq_time" value='' type='datetime'  range='false'/}
+                    {/if}
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo3">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__ROOT__/static/plugs/layui/layui.js"></script>
+<script>
+
+</script>

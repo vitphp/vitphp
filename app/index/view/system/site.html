@@ -1,0 +1,340 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief" style="overflow: hidden;" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">站点设置</li>
+                <li>首页菜单</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header"></div>
+                            <div class="layui-card-body">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站域名</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="domain" id="domain" value="{$site['domain']|default=''}" required="" lay-verify="required" placeholder="请输入您的域名" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">默认模板</label>
+                                        <div class="layui-input-block">
+                                            {assign name="defaultTemplate" value="$site.template??''"}
+                                            <select name="template" id="template">
+                                                <option value="">默认模板</option>
+                                                {volist name="pcApp" id="voApp"}
+                                                <option value="{$voApp.id}" {if $voApp.id==$defaultTemplate}selected{/if}>{$voApp.name}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站简称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="name" id="name" value="{$site['name']|default=''}" required="" lay-verify="required" placeholder="请输入网站简称" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站标题</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" id="title" value="{$site['title']|default=''}" required="" lay-verify="required" placeholder="请输入网站标题" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站关键字</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="keywords" id="keywords" value="{$site['keywords']|default=''}" required="" lay-verify="required" placeholder="请输入网站关键字" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站描述</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="description" id="description" value="{$site['description']|default=''}" required="" lay-verify="required" placeholder="请输入网站描述" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">客服QQ</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="kf_qq" id="kf_qq" value="{$site.kf_qq|default=''}" required="" lay-verify="required" placeholder="请输入客服QQ" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站首页logo</label>
+                                        <div class="layui-input-block">
+                                            {form:image name="index_logo" value="$site.index_logo??''" min="false" /}
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站后台logo</label>
+                                        <div class="layui-input-block">
+                                            {form:image name="admin_logo" value="$site.admin_logo??''" min="false" /}
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">网站首页内容</label>
+                                        <div class="layui-input-block">
+                                            {form:editor name="index_content" value="$site.index_content??''" /}
+                                        </div>
+                                    </div>
+                                    <!--   幻灯片-->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">幻灯片</label>
+                                        <div class="layui-input-block" id="hdpAddId">
+                                            {if $site.hdp}
+                                            {foreach $site.hdp as $k=>$v}
+                                                  <div class="customClass">
+                                                <div class="layui-input-inline" style="width: 38px;">
+                                                    <img style="height: 38px;width: 38px;" src="{$v.hdp_img}" class="customImgClass">
+                                                </div>
+                                                <div class="layui-input-inline customImg">
+                                                    <input type="text" name="hdp_img[]" value="{$v.hdp_img|default=''}" lay-verify="required" autocomplete="off" class="layui-input up-input">
+                                                    <a class="upmenu"><button type="button" class="layui-btn layui-btn-primary">上传图片</button></a>
+                                                </div>
+                                                <div class="layui-input-inline">
+                                                    <select name="hdp_open[]" lay-filter="aihao">
+                                                        <option value="0" {if $v.hdp_open == 0} selected{/if}>原窗口</option>
+                                                        <option value="1" {if $v.hdp_open == 1} selected{/if}>新窗口</option>
+                                                    </select>
+                                                </div>
+                                                <label class="layui-form-label vit-labe-grey">链接</label>
+                                                <div class="layui-input-inline" style="margin-right: 0">
+                                                    <input type="text" name="hdp_url[]" value="{$v.hdp_url|default=''}" lay-verify="required" autocomplete="off" class="layui-input up-input">
+                                                </div>
+                                                <div class="padding-left" style="line-height: 38px;">
+                                                    <a href="javascript:;" class="del_hdp"><i class="viticon vit-icon-cuo"></i></a>
+                                                </div>
+                                            </div>
+                                            {/foreach}
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <a style="margin-left: 20px"  href="javascript:;" class="layui-btn layui-btn-normal" id="addHdpId">添加幻灯片</a>
+                                        </div>
+                                    </div>
+                                    <!--   end-->
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">ICP备案号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="icpbeian" id="icpbeian" value="{$site['icpbeian']|default=''}" required="" lay-verify="required" placeholder="请输入网站ICP备案号" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">底部文字（上）</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="foot_top" id="foot_top" value="{$site['foot_top']|default=''}" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                                            <span class="text-orange">支持输入html代码</span>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">底部文字（下）</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="foot_bottom" id="foot_bottom" value="{$site['foot_bottom']|default=''}" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                                            <span class="text-orange">支持输入html代码</span>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn layui-btn-normal"  type="button" onclick="Site_save()">立即提交</button>
+                                        </div>
+                                    </div>
+                                    <span class="layui-form-label"></span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div style="float: right;">
+                        <button type="button" class='layui-btn layui-btn-primary margin' data-area='90%,600px' data-title="添加菜单" data-modal='{:url("$classuri/editmenu")}?type=index'>添加菜单</button>
+                    </div>
+                    <table class="layui-table" lay-size="lg">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>菜单名称</th>
+                            <th>url</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {volist name="indexList" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo._pre|default=''}{$vo.title}</td>
+                            <td>{$vo.url}</td>
+                            <td>{:$vo.status?'启用':'禁用'}</td>
+                            <td>
+                                <div class="layui-btn-group">
+                                    {if auth("$classuri/add")}{if $vo.pid==0}
+                                    <button class="layui-btn layui-btn-xs layui-btn-normal" href="javascript:;" data-area='90%,600px' data-title="添加子菜单" data-modal='{:url("$classuri/editmenu",["pid"=>$vo.id,"type"=>"index"])}'>
+                                        添加子菜单
+                                    </button>
+                                    {/if}{/if}
+                                    {if auth("$classuri/change")}
+                                    <button class="layui-btn layui-btn-xs layui-btn-{:$vo.status?'warm':'primary'}" href="javascript:;" data-confirm="确定操作该条数据吗？"
+                                            data-post='{:url("$classuri/change")}' data-param="id={$vo.id}&status={:abs($vo.status-1)}">
+                                        {:$vo.status?'禁用':'启用'}
+                                    </button>
+                                    {/if}
+                                    {if auth("$classuri/edit")}
+                                    <button class="layui-btn layui-btn-xs" href="javascript:;" data-title="编辑菜单" data-modal='{:url("$classuri/editmenu",["id"=>$vo.id,"type"=>"index"])}'>
+                                        编辑
+                                    </button>
+                                    {/if}
+                                    {if auth("$classuri/del")}
+                                    <button class="layui-btn layui-btn-xs layui-btn-danger" href="javascript:;"
+                                            data-confirm="确定要删除吗！" data-post='{:url("$classuri/del")}' data-param='ids={$vo.son_ids}'>
+                                        删除
+                                    </button>
+                                    {/if}
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.min = 'true';
+    //添加幻灯片
+    $(function () {
+        //自定义上传
+        $(".customImg").on('click', '.upmenu',function(){
+            var that = $(this);
+            customImg(layer, that, 'false');
+        })
+        $("#addHdpId").bind('click',function () {
+            layui.use(['form','layer'],function () {
+                var $ = layui.jquery, layer = layui.layer,form = layui.form;
+                var strVar="";
+                strVar += "   <div class=\"customClass\">";
+                strVar += "	   <div class=\"layui-input-inline\" style=\"width: 38px;\">";
+                strVar += "		   <img style=\"height: 38px;width: 38px;\" src=\"\" class=\"customImgClass\">";
+                strVar += "	   <\/div>";
+                strVar += "	   <div class=\"layui-input-inline customImg\">";
+                strVar += "";
+                strVar += "		   <input type=\"text\" name=\"hdp_img[]\" lay-verify=\"required\" autocomplete=\"off\" class=\"layui-input up-input\">";
+                strVar += "		   <a class=\"upmenu\"><button type=\"button\" class=\"layui-btn layui-btn-primary\">上传图片<\/button><\/a>";
+                strVar += "	   <\/div>";
+                strVar += "	   <div class=\"layui-input-inline\">";
+                strVar += "		   <select name=\"hdp_open[]\" lay-filter=\"aihao\">";
+                strVar += "			   <option value=\"0\" selected=\"\">原窗口<\/option>";
+                strVar += "			   <option value=\"1\" >新窗口<\/option>";
+                strVar += "		   <\/select>";
+                strVar += "	   <\/div>";
+                strVar += "	   <label class=\"layui-form-label vit-labe-grey\">链接<\/label>";
+                strVar += "	   <div class=\"layui-input-inline\" style=\"margin-right: 0\">";
+                strVar += "		   <input type=\"text\" name=\"hdp_url[]\" lay-verify=\"required\" autocomplete=\"off\" class=\"layui-input up-input\">";
+                strVar += "	   <\/div>";
+                strVar += "	   <div class=\"padding-left\" style=\"line-height: 38px;\">";
+                strVar += "		   <a href=\"javascript:;\" class='del_hdp'><i class=\"viticon vit-icon-cuo\"><\/i><\/a>";
+                strVar += "	   <\/div>";
+                strVar += "<\/div>";
+
+                $("#hdpAddId").append(strVar);
+                form.render();
+                $(".del_hdp").bind('click', function() {
+                    var obj = $(this).parents('.customClass');
+                    obj.remove();
+                });
+
+                //自定义上传
+                $(".customImg").on('click', '.upmenu',function(){
+                    var that = $(this);
+                    console.log("自定义上传", customImg);
+                    customImg(layer,that, 'false');
+                })
+            })
+
+        });
+        //删除
+        $(".del_hdp").bind('click', function() {
+            var obj = $(this).parents('.customClass');
+            obj.remove();
+        });
+    });
+    /**
+     * 拼接幻灯片数组
+     * @returns {[]}
+     */
+    function append_hdp() {
+        var hdp = [];
+        $(".customClass").each(function (index,elem) {
+            var info = {};
+            var hdp_img = $(this).find("input[name='hdp_img[]']").val();
+            var hdp_open = $(this).find("select[name='hdp_open[]']").val();
+            var hdp_show = $(this).find("select[name='hdp_show[]']").val();
+            var hdp_url = $(this).find("input[name='hdp_url[]']").val();
+
+            info.hdp_img = hdp_img;
+            info.hdp_open = hdp_open;
+            info.hdp_show = hdp_show;
+            info.hdp_url = hdp_url;
+
+            hdp.push(info);
+        });
+        return hdp;
+    }
+    //提交
+    function Site_save() {
+        var domain = $("#domain").val();
+        var name = $("#name").val();
+        var title = $("#title").val();
+        var keywords = $("#keywords").val();
+        var description = $("#description").val();
+        var kf_qq = $("#kf_qq").val();
+        var index_logo = $("input[name='index_logo']").val();
+        var admin_logo = $("input[name='admin_logo']").val();
+        var index_content = $("textarea[name='index_content']").val();
+        var icpbeian = $("#icpbeian").val();
+        var foot_top = $("#foot_top").val();
+        var foot_bottom = $("#foot_bottom").val();
+        var template = $("#template").val();
+        //获取幻灯片参数
+        var hdp = append_hdp();
+
+        $.post("{:url('index/system/site_save')}",{
+                domain:domain,
+                name:name,
+                title:title,
+                keywords:keywords,
+                description:description,
+                index_logo:index_logo,
+                admin_logo:admin_logo,
+                kf_qq:kf_qq,
+                index_content:index_content,
+                icpbeian:icpbeian,
+                foot_top:foot_top,
+                foot_bottom:foot_bottom,
+                template:template,
+                hdp:hdp
+            },).then(function(res){
+                console.log(res);
+                if(res.code == 1){
+                    layer.msg(res.msg);
+                    setTimeout(function(){
+                        location.reload();
+                    },1500);
+                    return false;
+                }else{
+                    layer.msg(res.msg);
+                    setTimeout(function(){
+                        location.reload();
+                    },1500);
+                    return false;
+                }
+        });
+    }
+</script>
+{/block}

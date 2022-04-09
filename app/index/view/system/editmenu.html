@@ -1,0 +1,102 @@
+<div class="vit-layout-fluid" style="height: 400px">
+    <form class="layui-form" data-form='{:request()->url()}'>
+        <input type="hidden" name="type" value="{$type|default=''}">
+        <input type="hidden" name="uid" value="{$uid|default=''}">
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">
+                <span class="text-red">*</span>菜单名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" required="" lay-verify="required"
+                       value="{$vo.title|default=''}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">
+                <span class="text-red">*</span>排序
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="sort" name="sort" required="" lay-verify="required"
+                       value="{$vo.sort|default='50'}" class="layui-input">
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label for="pid" class="layui-form-label">
+                <span class="text-red">*</span>上级菜单
+            </label>
+            <div class="layui-input-block">
+                <select name="pid" id="pid" lay-verify="required">
+                    <option value="0">顶级菜单</option>
+                    {volist name="parents" id="parent"}
+                    <option value="{$parent.id}" {if ((isset($vo.pid)) AND ($vo.pid eq $parent.id)) OR (isset($pid) AND ($pid eq $parent.id)) }selected{/if}>
+                    {$parent._pre}{$parent.title}
+                    </option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="url" class="layui-form-label">
+                <span class="text-red">*</span>链接地址
+            </label>
+            <div class="layui-input-block">
+                <input type="text" value="{$vo.url|default='#'}" id="url" name="url" required=""
+                       class="layui-input">
+            </div>
+        </div>
+        {if $type=='admin'}
+        <div class="layui-form-item">
+            <label for="icon" class="layui-form-label">
+                <span class="text-red">*</span>选择图标
+            </label>
+            <div class="layui-input-block">
+                {form:icon name="icon" value="$vo.icon|default=''" /}
+            </div>
+        </div>
+        {else}
+        <div class="layui-form-item">
+            <label for="icon" class="layui-form-label">
+                <span class="text-red">*</span>新窗口打开
+            </label>
+            <div class="layui-input-block">
+                {if !empty($vo.open)}
+                {if $vo.open == 1}
+                <input type="checkbox" name="open" checked  lay-skin="switch" lay-text="是|否" lay-filter="switch" id="isOpenId">
+                {else}
+                <input type="checkbox" name="open"  lay-skin="switch" lay-text="是|否" lay-filter="switch" id="isOpenId">
+                {/if}
+                {else}
+                <input type="checkbox" name="open"  lay-skin="switch" lay-text="是|否" lay-filter="switch" id="isOpenId">
+                {/if}
+            </div>
+        </div>
+        {/if}
+        <div class="layui-form-item layui-col-xs10 layui-col-xs-offset2">
+            {if isset($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" lay-submit="">确定</button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','element','form', 'jquery', 'iconHhysFa'],function () {
+        var element = layui.element;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        layui.form.render();
+        //监听指定开关
+        form.on('switch(switch)', function(data){
+            console.log(this.checked);
+            if(this.checked){
+                $("#isOpenId").val(1);
+            }else{
+                $("#isOpenId").val(0);
+            }
+        });
+
+    })
+</script>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css" media="all">
+    <script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+    <script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
+
+    <title>扫码登录</title>
+    <style>
+        .out {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #efefef;
+            border-radius: 5px;
+            background: #f7f7f7;
+            outline: none;
+            font-size: inherit;
+        }
+        .in-int {
+            width: 100%;
+            height: 40px;
+            border: none;
+            background: #46be2b;
+            border-radius: 5px;
+            color: white;
+            outline: none;
+            font-size: inherit;
+        }
+        .padding a{
+            text-decoration:none;
+            color: #333333;
+            font-size: inherit;
+            outline: none;
+            line-height: 40px;
+        }
+    </style>
+</head>
+<body>
+{if $error==0}
+<div class="text-center" style="padding-top: 5%">
+  <span class="viticon vit-icon-tishi" style="font-size: 100px;color: #46b0fe"></span>
+    <div class="padding-xl">
+        <span class="text-lg text-grey">确定要登录{$system_site.name|default="VitPhp"}工作台吗？</span>
+    </div>
+    <div class="padding">
+        <button class="in-int margin-top margin-bottom" onclick="doLogin()">确认</button>
+        <a class="out margin-top margin-bottom" href="javascript:WeixinJSBridge.call('closeWindow');" style="display:block">关闭</a>
+    </div>
+</div>
+{/if}
+<script>doLogin
+    {if $error==1}
+    layer.alert('{$tip}', out);
+    {/if}
+    function doLogin() {
+        $.post("{:url('/index/login/scan_login')}",{wesid:"{:input('wesid')}",op:"doLogin"},function(data){
+            data = JSON.parse(data);
+            console.log(data);
+            if(data.code == 200){
+                layer.alert('登录成功', out);
+            }else{
+                layer.alert(data.msg);
+            }
+        });
+    }
+   function out() {
+       javascript:WeixinJSBridge.call('closeWindow')
+   }
+</script>
+</body>
+</html>

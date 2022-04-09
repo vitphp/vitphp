@@ -1,0 +1,65 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">我的项目</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-pane" action="">
+                        <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline" style="margin-right: 0px;margin-left: 0">
+                                <input type="text" value="{$Request.get.keyword}" placeholder="请输入项目名称" name="keyword" autocomplete="off" class="layui-input">
+                            </div>
+                            <button class="layui-form-label" lay-submit lay-filter="search">搜索</button>
+                            {if auth("index/app/shop")}
+                            <button class="layui-form-label" style="float: right;"  data-area="90%,600px" data-title="选择应用" data-modal='{:url("app/shop")}'>创建项目</button>
+                            {/if}
+                        </div>
+                        </form>
+                    </div>
+                    <div>
+                        <table class="layui-table" lay-size="lg">
+                            <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>到期时间</th>
+                                {if $uid == 1}<th>管理员</th>{/if}
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name='applist' id='app'}
+                            <tr>
+                                <td>
+                                    <img style="width: 50px;padding-right: 15px;" src="{$app.logo|default=''}">
+                                    <span>{$app.name|default=''}</span>
+                                </td>
+                                <td>{:date('Y-m-d H:i:s',$app['dq_time'])}</td>
+                                {if $uid == 1}<td><span>{$app.username|default=''}</span></td>{/if}
+                                <td>
+                                    <button data-modal='{:url("app/edit")}?id={$app.id}' data-title="编辑资料" class="layui-btn layui-btn-primary layui-btn-sm">编辑</button>
+                                    <button class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:;"
+                                            data-confirm="确定要删除平台吗！" data-post='{:url("app/del")}' data-param="id={$app.id}">删除平台
+                                    </button>
+                                    <a class="layui-btn layui-btn-sm layui-btn-normal" href="/index/addons?pid={$app.id}" target="_blank">进入应用</a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                    {$page|raw}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    form.on('submit(search)', function(data){
+    });
+</script>
+{/block}

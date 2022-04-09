@@ -1,0 +1,93 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body padding-xl">
+        <div class="layui-row">
+            <form class="layui-form layui-col-md12 we-search" action="{:request()->url()}" method="get">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline" style="margin-right: 0px;margin-left: 0">
+                        <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" value="{$Request.get.username|default=''}">
+                    </div>
+                    <button class="layui-btn layui-btn layui-btn-primary" lay-submit="" lay-filter="sreach">搜索</button>
+                    <div class="weadmin-block" style="float:right;">
+                        {if auth("$classuri/del")}
+                        <button class="layui-btn layui-btn layui-btn-primary" data-post-batch='{:url("$classuri/del")}' data-title="批量删除">批量删除</button>
+                        {/if}
+                        {if auth("$classuri/add")}
+                        <button class="layui-btn layui-btn layui-btn-primary" data-modal='{:url("$classuri/add")}' data-title="添加用户">添加用户</button>
+                        {/if}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="layui-table" lay-even lay-skin="line" lay-size="lg">
+            <thead>
+            <tr>
+                <th>
+                    <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+                </th>
+                <th>id</th>
+                <th>账号</th>
+                <th>角色</th>
+                <th>状态</th>
+                <th>最后登录</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo"}
+            <tr>
+                <td>
+                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{$vo.id}'><i class="layui-icon">&#xe605;</i></div>
+                </td>
+                <td>{$vo.id}</td>
+                <td>{$vo.username}</td>
+                <td>
+                    {volist name="vo.roles" id="role"} {$role.title} {/volist}
+                    <br>
+                    {if $vo.pid}<span class="layui-btn layui-btn-xs layui-btn-warm">应用管理员</span>{/if}
+                </td>
+                <td>{:$vo.state?'启用':'禁用'}</td>
+                <td>
+                    {$vo.last_login|date='Y-m-d H:i:s'}<br>
+                </td>
+                <td>
+                    <div class="layui-btn-group">
+                        {if auth("$classuri/access")}
+                        <button class="layui-btn layui-btn-primary layui-btn-xs" href="javascript:;" data-title="附加权限" data-area='90%,600px' data-modal='{:url("$classuri/access",["id"=>$vo.id])}'>
+                            附加权限
+                        </button>
+                        {/if}
+                        {if auth("$classuri/edit")}
+                        <button class="layui-btn layui-btn-primary layui-btn-xs" href="javascript:;" data-title="编辑用户" data-area='90%,600px' data-modal='{:url("$classuri/edit",["id"=>$vo.id])}'>
+                            编辑
+                        </button>
+                        {/if}
+                        {if auth("$classuri/password")}
+                        <button class="layui-btn layui-btn-primary layui-btn-xs" href="javascript:;" data-title="重置密码" data-area='90%,600px' data-modal='{:url("$classuri/password",["id"=>$vo.id])}'>
+                            密码
+                        </button>
+                        {/if}
+                        {if auth("$classuri/change")}
+                        <button class="layui-btn layui-btn-xs layui-btn-{:$vo.state?'warm':'primary'}" href="javascript:;" data-confirm="确定操作该条数据吗？"
+                                data-post='{:url("$classuri/change")}' data-param="id={$vo.id}&state={:abs($vo.state-1)}">
+                            {:$vo.state?'禁用':'启用'}
+                        </button>
+                        {/if}
+                        {if auth("$classuri/del")}
+                        <button class="layui-btn layui-btn-primary layui-btn-xs" href="javascript:;"
+                                data-confirm="确定要删除吗！" data-post='{:url("$classuri/del")}' data-param="ids={$vo.id}">
+                            删除
+                        </button>
+                        {/if}
+                    </div>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{$page|raw}
+
+{/block}

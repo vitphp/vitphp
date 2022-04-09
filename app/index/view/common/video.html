@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=20211010" media="all">
+</head>
+<body>
+<table class="layui-table">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>大小</th>
+        <th>操作
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="upload-video"
+                    style="float: right">上传视频
+            </button>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="video-main">
+    </tbody>
+</table>
+<div>
+    <div id="video-page"></div>
+</div>
+</body>
+<script id="videoItem" type="text/html">
+    {{# var size = (d.size / 1024).toFixed(2)}}
+    {{# size = size < 0.01 ? 0.01 : size}}
+    <tr>
+        <td>
+            <span class="line-one">{{d.filename}}</span>
+        </td>
+        <td>{{size}} MB</td>
+        <td style="width: 210px;">
+            <a data-fileurl="{{d.fileurl}}" class="layui-btn layui-btn-xs layui-btn-normal checked-video">选择</a>
+            <a data-fileurl="{{d.fileurl}}" class="layui-btn layui-btn-warm layui-btn-xs play-video">播放</a>
+            <span data-id="{{d.id}}" class="layui-btn layui-btn-danger layui-btn-xs remove-video">删除</span>
+        </td>
+    </tr>
+</script>
+<script src="__ROOT__/static/plugs/layui/layui.js"></script>
+<script>
+    function getQueryString(name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURIComponent(r[2]);
+        return null;
+    }
+
+    layui.use(['laypage', 'layer', 'upload', 'laytpl'], function () {
+        var laypage = layui.laypage, layer = layui.layer, $ = layui.jquery, upload = layui.upload,
+            laytpl = layui.laytpl;
+
+        var videoMain = $('#video-main');
+
+        // 删除
+        videoMain.on('click', '.remove-video', function () {
+            var id = $(this).data('id');
+            var _this = $(this);
+            layer.confirm('确定要删除吗？', {
+                btn: ['确定', '取消']
+            }, function (index) {
+                $.ajax({
+                    url: "{:url('index/api.attachment/delimage')->build()}?session={:input('session')}&storage_id={:input('storage_id')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id: id},
+                    success: function (res) {
+                        if (res.code == 1) {
+                            _this.parent().parent().remove();
+                        } else {
+                            layer.msg(res.msg || '删除失败!');
+                        }
+                    }, error: function (res) {
+                        layer.msg('删除失败');
+                    }
+                });
+                layer.close(index);
+            });
+        })
+        // 播放
+        videoMain.on('click', '.play-video', function(){
+            var videoUrl = $(this).data('fileurl');
+            if(!videoUrl) return;
+            layer.open({
+                type: 2,
+                title: false,
+                area: ['630px', '360px'],
+                shade: 0.8,
+                closeBtn: 0,
+                shadeClose: true,
+                content: videoUrl
+            });
+        })
+        // 视频列表
+        $.post("{:url('index/api.attachment/imagelist')}?session={:input('session')}&storage_id={:input('storage_id')}", {type: 3}).then(function (res) {
+            let {data, total, per_page} = res;
+            videoMain.html('');
+            if (data && data.length > 0) {
+                data && data.forEach(item => {
+                    laytpl(videoItem.innerHTML).render(item, function (html) {
+                        videoMain.append(html);
+                    });
+                });
+                laypage.render({
+                    elem: 'video-page', //注意，这里的 test1 是 ID，不用加 # 号
+                    count: total, //数据总数，从服务端得到
+                    theme: '#1E9FFF',
+                    limit: per_page,
+                    jump: function (obj, first) {
+                        //obj包含了当前分页的所有参数，比如：
+                        //首次不执行
+                        if (!first) {
+                            $.post("{:url('index/api.attachment/imagelist')}?session={:input('session')}&storage_id={:input('storage_id')}", {
+                                'page': obj.curr,
+                                type: 3
+                            }).then(function (ress) {
+                                let {data, total, per_page} = ress;
+                                videoMain.html('');
+                                if (data && data.length > 0) {
+                                    data && data.forEach(item => {
+                                        laytpl(videoItem.innerHTML).render(item, function (html) {
+                                            videoMain.append(html);
+                                        });
+                                    })
+                                }
+                            })
+                        }
+                    }
+                });
+                return false;
+            } else {
+                layer.msg(res.msg || '暂无视频');
+                return false;
+            }
+        });
+
+        //执行实例
+        var uploadapi = getQueryString('api')
+        if (!uploadapi) {
+            uploadapi = '{:url("index/api.attachment/upload")}';
+        }
+        var uploadInst = [];
+
+        upload.render({
+            elem: '#upload-video',
+            url: uploadapi,
+            accept: 'video', //只允许传视频
+            acceptMime: '{$videoAcceptMime}',
+            data: {
+                min: false,
+                type: 3
+            },
+            multiple: true,
+            auto: false,
+            choose: function (obj) {
+                $(".layui-upload-file").val("")
+                var files = uploadInst = obj.pushFile();
+                var filesArry = [];
+                for (var key in files) { //将上传的文件转为数组形式
+                    filesArry.push(files[key])
+                }
+
+                filesArry.forEach((item, index) => {
+                    obj.upload(index, item);
+                })
+            },
+            before: function (obj) {
+                obj.preview(function (index, file, result) {
+                    delete uploadInst[index]; //删除列表中对应的文件，一般在某个事件中使用
+                });
+                loadingLayerIndex = layer.msg('视频上传中，请稍后', {icon: 16,shade: 0.01, time: -1});
+            },
+            done: function (res) {
+                layer.close(loadingLayerIndex);
+                if (res.code == 0) {
+                    for (let file of res.data) {
+                        laytpl(videoItem.innerHTML).render({
+                            id: file.id,
+                            fileurl: file.fileurl,
+                            size: file.size,
+                            filename: file.name
+                        }, function (html) {
+                            videoMain.prepend(html);
+                        });
+                    }
+                }else{
+                    layer.msg(res.msg || '上传出错');
+                }
+                //上传完毕
+            },
+            allDone: function (obj) { //当文件全部被提交后，才触发
+                $(".layui-upload-file").val("")
+            }
+        });
+
+        videoMain.on('click', '.checked-video', function () {
+            let url = $(this).data('fileurl')
+            if (!url) {
+                layer.msg('请选择视频');
+                return false
+            }
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index);
+            var input_id = getQueryString('input_id');
+            var pre_id = getQueryString('pre_id');
+            $(window.parent.document).find('body').attr('data-id', url);
+            $(window.parent.document).find('#' + input_id).val(url);
+            $(window.parent.document).find('#' + pre_id).attr('src', url);
+        })
+
+        $("#cancel").click(function () {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index);
+        })
+    })
+</script>
+</html>

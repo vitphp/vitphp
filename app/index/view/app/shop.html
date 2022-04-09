@@ -1,0 +1,59 @@
+<div class="vit-layout-fluid">
+    <form class="layui-form" data-form='{:request()->url()}'>
+        {volist name='app' id='app'}
+        <div class="layui-col-md3" style="width: 23%" onclick="buyAddons(this)" data-id="{$app.id}">
+            <div class="layui-panel">
+                <div style="padding: 10px;text-align: center">
+                    <div class="layui-card-body">
+                        <div><img style="width: 80px;height: 80px;" src="{$app.logo}"></div>
+                        <div style="font-size: 14px;text-overflow:ellipsis;white-space:nowrap;-webkit-line-clamp: 1;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;white-space: normal;">{$app.name}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/volist}
+        <div class="layui-col-md10" style="margin-top: 10px">
+            <div class="layui-form-item text-center">
+                <button type="button" class="layui-btn layui-btn-normal" onclick="submitBuy()">立即提交</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        function buyAddons(t) {
+                $(t).addClass("buyaddons").siblings().removeClass("buyaddons");
+        }
+        //提交购买
+        function submitBuy() {
+
+            if($(".layui-col-md3").hasClass("buyaddons")){
+                var addons_id = $(".buyaddons").attr('data-id');
+                layer.confirm('确认用该应用创建项目吗？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    console.log(addons_id);
+                    var url = "{:url('save_project')}";
+                    var type = "post";
+                    var param = {
+                        addons_id:addons_id
+                    };
+                    var rediUrl = "{:url('index')}";
+                    //执行ajax 请求
+                    actionAjax(url,type,param,false);
+                }, function(){
+
+                });
+             }else{
+                layer.msg("请选择要购买的应用");
+            }
+
+        }
+    </script>
+    <style>
+        .buyaddons .layui-panel{
+            border: 1px solid red;
+        }
+        .layui-col-md3{
+            margin: 5px;
+        }
+    </style>
+</div>

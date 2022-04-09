@@ -1,0 +1,47 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-row padding-bottom">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">统计</div>
+            <div class="layui-card-body" style="display: flex;">
+                <div class="layui-col-xs3 text-center" >
+                    <div class="text-bold">用户总数</div>
+                    <div class="padding text-xxl text-black text-bold">{$data.usersum}</div>
+                </div>
+                <div class="layui-col-xs3 text-center" >
+                    <div class="text-bold">应用数量</div>
+                    <div class="padding text-xxl text-black text-bold">{$data.addonssum}</div>
+                </div>
+                <div class="layui-col-xs3 text-center" >
+                    <div class="text-bold">项目数量</div>
+                    <div class="padding text-xxl text-black text-bold">{$data.appsum}</div>
+                </div>
+                <div class="layui-col-xs3 text-center" >
+                    <div class="text-bold">文章数量</div>
+                    <div class="padding text-xxl text-black text-bold">{$data.newssum}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-row padding-bottom">
+    <div class="layui-card">
+        <div class="layui-card-header">{:getSetting('name', 'mainset')}
+            {if $Request.session.admin.id == 1}<a href="javascript:;" data-area="90%,600px" data-title="配置文章列表" data-modal='{:url("setnews")}' class="layui-card-header" style="float: right;" href="javascript:;">配置文章列表</a>{/if}
+        </div>
+        <div class="layui-card-body padding-xl" style="display: flow-root;">
+            <ul class="list-unstyled layui-card">
+                {volist name="news" id="n"}
+                <li>
+                    <a href="/index/index/news.html?id={$n.id}" target="_blank" style="display: flex;padding: 10px 15px;">
+                        <div class="layui-col-xs9">{$n.title}</div>
+                        <div class="layui-col-xs3">{:date('Y-m-d H:i:s',$n['createtime'])}</div>
+                    </a>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+</div>
+{/block}

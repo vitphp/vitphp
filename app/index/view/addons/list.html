@@ -1,0 +1,393 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">本地应用</li>
+                {if $vit_dev == 1}
+                <li>创建新应用</li>
+                {/if}
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table" lay-size="lg">
+                        <thead>
+                        <tr>
+                            <th>应用</th>
+                            <th>版本</th>
+                            <th>开发者</th>
+                            <th>应用类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $notInstallList as $k=>$v}
+                        <tr>
+                            <td>
+                                <span>{$v.name|default=''}</span>
+                            </td>
+                            <td>
+                                <div>版本：{$v.version|default=''} </div>
+                            </td>
+                            <td>
+                                <div>{$v.author|default=''}</div>
+                            </td>
+                            <td>
+                                {empty name="v.addons_type"}
+                                其他应用
+                                {else/}
+                                {$v.addons_type}
+                                {/empty}
+                            </td>
+                            <td>
+                                <div class="layui-btn-group">
+                                    {if $v.identifie}
+                                    <span class="layui-btn layui-btn-xs btn-install" data-name="{$v.name|default=''}" data-url="{:url('install')}?id={$v.id}">安装</span>
+                                    {/if}
+                                    {if !$v.identifie && $v.goods_id}
+                                    <span data-id="{$v.id}" class="cloud-down layui-btn layui-btn-xs layui-btn-warm">下载源码</span>
+                                    {/if}
+                                </div>
+
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                        <tbody>
+                        {foreach $installedList as $k=>$v}
+                        <tr>
+                            <td>
+                                <img style="width: 50px;padding-right: 15px;" src="{$v.logo}">
+                                <span>{$v.name|default=''}</span>
+                            </td>
+                            <td>
+                                <div>版本：{$v.version|default=''}
+                                    {if $v.is_update}<span data-v="{$v.yun_version}" style="color: #029bde;">升级</span>{/if}
+                                    <?php if($v['waitUpdate']) echo '<span style="color:#029bde;">有可用最新版本'.$v['waitUpdateVersion'].'</span>';  ?> </div>
+                            </td>
+                            <td>
+                                <div>{$v.author|default=''}</div>
+                            </td>
+                            <td>
+                                {empty name="v.addons_type"}
+                                其他应用
+                                {else/}
+                                {$v.addons_type}
+                                {/empty}
+                            </td>
+                            <td>
+                                <div class="layui-btn-group">
+                                    {if $vit_dev == 1}
+                                    <a class="layui-btn layui-btn-normal layui-btn-xs" href='{:url("menu")}?ide={$v.identifie}'>菜单管理</a>
+                                    {/if}
+                                    <button class="layui-btn layui-btn-normal layui-btn-xs" data-title="编辑应用" data-modal='{:url("edit")}?id={$v.id}'>编辑应用</button>
+                                    <button class="layui-btn layui-btn-normal layui-btn-xs" href="javascript:;" data-title="卸载" onclick="uninstall({$v.id})">卸载</button>
+                                    {if $v.is_update}
+                                    <button class="layui-btn layui-btn-warm layui-btn-xs" data-title="远程升级" data-modal='{:url("yunUpdate")}?id={$v.id}'>升级</button>
+                                    {/if}
+                                    <?php if($v['waitUpdate']){ ?>
+                                        <button class="layui-btn layui-btn-warm layui-btn-xs" href="javascript:;" data-title="升级" data-action="">
+                                            <a href="{:url('update')}?id={$v.id}" style="color: #fff">本地升级</a>
+                                        </button>
+                                    <?php } ?>
+                                </div>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    {$page|raw}
+                </div>
+                <div class="layui-tab-item">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入应用名称" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用目录</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="addons" lay-verify="required" autocomplete="off" placeholder="请输入应用目录" class="layui-input">
+                                <span>应用目录以蛇形命名法，比如cs_sss</span>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">表前缀</label>
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="应用表前缀" disabled id="table_pre" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用封面</label>
+                            <div class="layui-input-block">
+                                {form:image name="logo" value='' /}
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商品ID</label>
+                            <div class="layui-input-block">
+                                <input type="number" name="goods_id" autocomplete="off" placeholder="请输入商品ID" class="layui-input">
+                                <span>商品ID是萌折应用市场的商品ID，如需上架请先创建商品，如果没有请留空！</span>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者名字</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="author" lay-verify="required" autocomplete="off" placeholder="请输入应用作者名字" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用类型</label>
+                            <div class="layui-input-block">
+                                {form:radio name="addons_type" data="['wechat'=>'微信公众号','wxapp'=>'微信小程序','web'=>'网页应用','workwechat'=>'企业微信','dyapp'=>'字节跳动小程序','ksapp'=>'快手小程序','bdapp'=>'百度小程序','alpayapp'=>'支付宝小程序','androidapp'=>'安卓APP','iosapp'=>'苹果APP','template'=>'系统模板','other'=>'其他应用']" value="$addons_type??'wechat'" type="checkbox" /}
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用菜单</label>
+                            <div class="layui-input-block">
+                                <div id="menu_list">
+                                    <div class="layui-form-item" id="app_1">
+                                        <label class="layui-form-label vit—labe-grey">菜单名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="menu_name_1" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <label class="layui-form-label vit—labe-grey">URL地址</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="menu_url_1" lay-verify="required" placeholder="请输入菜单URL" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-input-inline" style="width: 150px;">
+                                            <div class="layui-input-inline" style="width: 150px;">
+                                                <span style="text-align: center;line-height: 38px" class="layui-input up-input checkmenu" id="menu_iconcheck_1">
+                                                    <i class=""></i>
+                                                    <input type="hidden" name="menu_icon_1" value="" class="input-icon" id="menu_iconinput_1" lay-verify="required">
+                                                </span>
+                                                <a class="upmenu" onclick="checkicon(1)">
+                                                    <button class="layui-btn layui-btn-primary" type="button">选择图标</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <a onclick="del_app(1)" style="line-height: 38px"><i class="viticon vit-icon-cuo"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-grey">url格式为index/index，无需填写应用目录</p>
+                                <span class="help-block col-sm-9" style="margin-left:-15px">
+                                  <a href="javascript:;" class="viticon vit-icon-caidanfill" id="addmenu">添加新菜单</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a href="javascript:;" class="layui-btn layui-btn-normal" lay-submit lay-filter="demo1">创建应用</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.btn-install').click(function(){
+        var url = $(this).data('url');
+        var name = $(this).data('name');
+        console.log(url);
+        layer.confirm('是否要安装《'+name+'》到系统内？', {
+            title: '',
+            btn: ['确定','先不安装']
+        }, function(i){
+            var loadingIndex = layer.msg('《'+name+'》安装中...', {icon: 16,shade: 0.01, time:-1});
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                success: function (res) {
+                    layer.close(loadingIndex);
+                    if(res.code==1){
+                        layer.msg('安装成功');
+                        window.location.reload();
+                    }else{
+                        layer.msg('失败，请重试');
+                    }
+                },
+                error: function(e){
+                    layer.close(loadingIndex);
+                }
+            });
+            layer.close(i);
+        });
+    });
+
+    $('.cloud-down').click(function(){
+        var goodsId = $(this).data('id');
+        console.log(goodsId);
+        layer.confirm('是否下载该应用到系统内\n？', {
+            title: '这是标题',
+            btn: ['确定','先不下载']
+        }, function(i){
+            var loadingIndex = layer.msg('下载中', {icon: 16,shade: 0.01, time:-1});
+            $.ajax({
+                type: "POST",
+                url: "/index/addons/cloud_down.html?id="+goodsId,
+                dataType: "json",
+                success: function (res) {
+                    layer.close(loadingIndex);
+                    if(res.code==1){
+                        layer.msg('下载成功');
+                        window.location.reload();
+                    }else{
+                        layer.msg(res.msg || '失败，请重试');
+                    }
+                },
+                error: function(e){
+                    layer.close(loadingIndex);
+                }
+            });
+            layer.close(i);
+        });
+    });
+
+    var app_count = 2;
+    function uninstall(id) {
+        layer.confirm('确认卸载吗？', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            location.href = "{:url('uninstall')}?id=" + id;
+        }, function () {
+        });
+    }
+    $('#addmenu').click(function () {
+        let str = '<div class="layui-form-item" id="app_' + app_count + '">\n' +
+            '                    <label class="layui-form-label vit—labe-grey">菜单名称</label>\n' +
+            '                    <div class="layui-input-inline">\n' +
+            '                      <input type="text" name="menu_name_' + app_count + '" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">\n' +
+            '                    </div>\n' +
+            '                    <label class="layui-form-label vit—labe-grey">URL地址</label>\n' +
+            '                    <div class="layui-input-inline">\n' +
+            '                      <input type="text" name="menu_url_' + app_count + '" lay-verify="required" placeholder="请输入菜单URL" autocomplete="off" class="layui-input">\n' +
+            '                    </div>\n' +
+            '                    <div class="layui-input-inline" style="width: 150px;">\n';
+
+        str += '<div class="layui-input-inline" style="width: 150px;">\n' +
+            '                                   <span style="text-align: center;line-height: 38px" class="layui-input up-input checkmenu" id="menu_iconcheck_' + app_count + '"> \n' +
+            '                  <i class=""></i> \n' +
+            '                  <input type="hidden" name="menu_icon_' + app_count + '" value="" class="input-icon" id="menu_iconinput_' + app_count + '" lay-verify="required"> \n' +
+            '              </span> \n' +
+            '              <a class="upmenu" onclick="checkicon(' + app_count + ')"><button class="layui-btn layui-btn-primary" type="button">选择图标</button></a>\n' +
+            '                    </div>'
+
+        str += '</div>\n' +
+            '                    <div class="layui-input-inline">\n' +
+            '                      <a onclick="del_app(' + app_count + ')" style="line-height: 38px"><i class="viticon vit-icon-cuo"></i></a>\n' +
+            '                    </div>\n' +
+            '                  </div>';
+        $('#menu_list').append(str);
+        app_count++;
+    });
+    function checkicon(count) {
+        let checkId = 'menu_iconcheck_' + count;
+        let inputId = 'menu_iconinput_' + count;
+        layer.open({
+            type: 2,
+            title: '选择图标',
+            shadeClose: true,
+            shade: 0.8,
+            maxmin: true,
+            area: ['80%', '90%'],
+            content: '/index/common/icon.html?checkId=' + checkId + '&inputId=' + inputId
+        });
+    }
+
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form, layer = layui.layer;
+
+        $('input[name="addons"]').bind('input propertychange',function(){
+            //grantnumchange();
+            console.log($(this).val());
+            $('#table_pre').val('vit_' + $(this).val());
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                let src_img = $("input[name='logo']").parent().find('img').attr('src');
+                let form_data = data.field;
+
+                var addonsTypes = [];
+                $('input[lay-filter=data-addons_type]:checked').each(function() {
+                    addonsTypes.push($(this).val());
+                });
+
+                let sub_data = {
+                    addons: form_data.addons,
+                    addons_type: addonsTypes,
+                    author: form_data.author,
+                    logo: src_img,
+                    name: form_data.name
+                };
+
+                //拼接应用菜单
+                let menu = [];
+                for (let i = 1; i < app_count; i++) {
+                    if (form_data['menu_name_' + i] !== undefined) {
+                        let data = {
+                            menu_name: form_data['menu_name_' + i],
+                            menu_url: form_data['menu_url_' + i],
+                            menu_icon: form_data['menu_icon_' + i],
+                        };
+                        menu.push(data)
+                    }
+                }
+                sub_data.menus = menu;
+                let url = "{:url('save')}";
+                $.post(url, sub_data).fail(function (xmr) {
+                    layui.layer.msg("网络错误，status = " + xmr.status, {
+                        shade: [0.3, '#393D49'],
+                        icon: data.code,
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }).then(function (res) {
+                    if (res.code === 1) {
+                        layer.confirm('是否安装该应用？', {
+                            btn: ['确定', '取消'] //按钮
+                        }, function () {
+                            let install_url = "{:url('install')}";
+                            console.log("shuju",res.data)
+                            $.post(install_url, {id:res.data}).fail(function (xmr) {
+                                layui.layer.msg("网络错误，status = " + xmr.status, {
+                                    shade: [0.3, '#393D49'],
+                                    icon: data.code,
+                                    time: 3000,
+                                    shadeClose: true
+                                });
+                            }).then(function (info_res) {
+                                if (info_res.code === 1) {
+                                    layer.msg('创建成功',{icon:1,time:1000},function () {
+                                        setTimeout('window.location.reload()',1000);
+                                    });
+                                } else {
+                                    layer.msg(res.msg);
+                                }
+                            });
+                        }, function () {
+                            window.location.reload();
+                            layer.msg('创建成功');
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                        // layer.msg(res.msg);
+                    }
+                });
+                // layer.msg(JSON.stringify(data.field));
+            });
+        });
+    });
+</script>
+{/block}

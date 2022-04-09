@@ -1,0 +1,30 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-tab-content" style="padding-bottom: 100px">
+    <div class="layui-form layui-form-pane" action="">
+        <table class="layui-table" lay-size="lg">
+            <thead>
+            <tr>
+                <th>用户</th>
+                <th>节点</th>
+                <th>描述</th>
+                <th>IP地址</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='log' id='log'}
+            <tr>
+                <td>{$log.user_name|default=''}</td>
+                <td>{$log.auth|default=''}</td>
+                <td>{$log.auth_text|default=''}</td>
+                <td>{$log.ip|default=''}</td>
+                <td>{:date('Y-m-d H:i:s' , $log['create_time'])}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        {$page|raw}
+    </div>
+</div>
+{/block}

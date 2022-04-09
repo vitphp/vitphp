@@ -1,0 +1,75 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=20211010" media="all">
+  <script src="__ROOT__/static/plugs/layui/layui.js"></script>
+  <script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+
+</head>
+<body>
+<div>
+  <div class="">
+    <div class="padding text-center"   style="display: none">
+      <img style="width: 300px;" src="" id="qrcordId" >
+      <div style="color: red;text-align: center" id="msgId"></div>
+    </div>
+    <form class="layui-form" action=" " style="width: 80%;margin: auto;" >
+      <div class="layui-form-item" >
+        <label class="layui-form-label">验证密码</label>
+        <div class="layui-input-block">
+          <input type="password" name="password" id="passwordId" value="" required="" lay-verify="required" placeholder="请输入验证密码" autocomplete="off" class="layui-input">
+          <span class="margin">绑定和修改微信时需要验证密码才可以操作！</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script>
+    var callbackdata = function () {
+      var pass = $("#passwordId").val();
+      var data = {
+         pass:pass
+      };
+      return data;
+    }
+    //查询绑定状态--------------------------------------------------------------------------------------------------------
+    function query() {
+        var src = $("#qrcordId").attr("src");
+        console.log(src);
+        if(src!=""){
+          var Intervals = setInterval(function(){
+              querybind(Intervals);
+          },2000);
+
+        }
+    }
+    function querybind(Intervals) {
+      $.post("{:url('index/my/queryBind')}",{
+
+      }).then(function(res){
+        console.log(res);
+        var res = JSON.parse(res);
+        if(res.code == 200){
+          $("#msgId").html(res.msg);
+          //清除定时
+          clearInterval(Intervals);
+         //向父页面传值
+          parent.$('#nicknameId').val(res.data);
+          parent.$("#clickBd").html("解除绑定");
+          parent.$("#clickBd").attr("onclick","unbind()");
+          var index = parent.layer.getFrameIndex(window.name);
+          parent.layer.close(index);
+
+          return false;
+        }else{
+          $("#msgId").html(res.msg);
+          return false;
+        }
+      });
+    }
+    //end
+  </script>
+</div>
+</body>

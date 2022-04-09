@@ -1,0 +1,55 @@
+<style>
+    .input-box{
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+</style>
+<div class="vit-layout-fluid">
+    <form class="layui-form" data-form='{:request()->url()}'>
+        <div class="ssssnode">
+            {volist name="apps" id="node"}
+                <div>
+<!--                    <p style="line-height:45px;font-weight:bolder;">{$node.path}模块</p>-->
+                {volist name="node.list" id="item"}
+                    <div style="padding-left: 30px;">
+                        <p style="line-height:45px;font-weight:bolder;">|— {$item.title} <input lay-filter="sall" type="checkbox" sall="{$item.path}" lay-skin="primary"></p>
+                    {volist name="item.list" id="va"}
+                        <div class="input-box">
+                            <input type="checkbox"  i="{$item.path}" name="node[]"  value="{$va.node}" title="{$va.title}" lay-skin="primary" {if in_array($va.node,$nodes)}checked{/if}>
+                            {if $va.login == 0 /}
+                                <span style="color:#FFB800;line-height:45px;padding-right: 20px">(免登录)</span>
+                            {else/}
+                                <span style="color:#FFB800;line-height:45px;padding-right: 20px">({:$va.auth?"需验证":"无验证"})</span>
+                            {/if}
+                        </div>
+                    {/volist}
+                    </div>
+                {/volist}
+                </div>
+            {/volist}
+        </div>
+        <div class="layui-form-item layui-col-xs10 layui-col-xs-offset2">
+            {if isset($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" lay-submit="">确定</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['form','jquery'],function () {
+        layui.form.render();
+        let $ = layui.jquery;
+        let form =layui.form;
+        form.on('checkbox(sall)', function(data){
+            let i = data.elem.getAttribute('sall');
+            if(data.elem.checked){
+                $(".ssssnode input[i="+i+"]").prop('checked',true);
+                layui.form.render();
+            }else{
+                $(".ssssnode input[i="+i+"]").prop("checked", false);
+            }
+            layui.form.render();
+        });
+
+    })
+</script>

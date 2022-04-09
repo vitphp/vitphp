@@ -1,0 +1,85 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane" action="" lay-filter="form-search">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline" style="margin-right: 0px;margin-left: 0">
+                                <input type="text" name="orderid" placeholder="请输入订单号"
+                                       autocomplete="off" value="{$Request.get.orderid ?? ''}" class="layui-input">
+                            </div>
+                            {if $Request.session.admin.id==1}
+                            <div class="layui-input-inline" style="margin-right: 0px;margin-left: 0">
+                                <select name="user_id" lay-filter="">
+                                    <option value="">选择用户</option>
+                                    {volist name="users" id="uvo"}
+                                    <option value="{$uvo.id}" {if $Request.get.user_id==$uvo.id}selected{/if}>{$uvo.username}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            {/if}
+                            <button class="layui-form-label" lay-submit lay-filter="search">搜索</button>
+                        </div>
+                    </div>
+                    <div class="layui-tab-content">
+                        <div class="layui-form layui-form-pane" action="">
+                            <table class="layui-table" lay-size="lg">
+                                <thead>
+                                <tr>
+                                    {if $Request.session.admin.id==1}
+                                    <th>用户</th>
+                                    {/if}
+                                    <th>商品</th>
+                                    <th>订单</th>
+                                    <th>支付时间</th>
+                                    <th>下单时间</th>
+                                    <th>说明</th>
+                                    <th>状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="order" id="vo"}
+                                <tr>
+                                    {if $Request.session.admin.id==1}
+                                    <td>{$vo.username}</td>
+                                    {/if}
+                                    <td>{$vo.snapshot.name ?? ''}</td>
+                                    <td>{$vo.orderid}</td>
+                                    <td>
+                                        {if $vo.paytime}
+                                        {$vo.paytime|date="Y-m-d H:i:s"}
+                                        {/if}
+                                    </td>
+                                    <td>{$vo.create_time|date="Y-m-d H:i:s"}</td>
+                                    <td>{$vo.describe}</td>
+                                    <td>
+                                        {switch vo.status}
+                                        {case 1}已支付{/case}
+                                        {case 0}待支付{/case}
+                                        {/switch}
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                        {$page|raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.form.on('submit(search)', function(data){
+        console.log(data.field);
+        var domain = window.location.host;
+        var route = '{:url("index/property/index")->build()}&orderid='+data.field.orderid+'&user_id='+data.field.user_id;
+        window.location.href = '//' + domain + route;
+        return false;
+    });
+</script>
+{/block}

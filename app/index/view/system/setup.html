@@ -1,0 +1,318 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" >
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">用户设置</li>
+                    <li>附件设置</li>
+                    <li>公众号配置</li>
+                </ul>
+                <div class="layui-tab-content" >
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label">用户注册</label>
+                            <div class="layui-input-block">
+                                {form:radio name="is_reg" data="['1'=>'关闭','2'=>'开启']" value=":getSetting('is_reg')??'1'" type="radio" /}
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">注册默认权限组</label>
+                            <div class="layui-input-block">
+                                <select name="interest" lay-filter="aihao">
+                                    <option value=""></option>
+                                    {foreach $role as $k=>$v}
+                                    <option value="{$v.id}" {if getSetting('interest')==$v.id}selected=""{/if}>{$v.title}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户协议</label>
+                            <div class="layui-input-block">
+                                {form:editor name="xieyi" value=":getSetting('xieyi')" /}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">图片压缩宽度</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="imgwidth" value="{:getSetting('imgwidth')}" autocomplete="off" placeholder="请输入图片压缩宽度" class="layui-input up-input">
+                                <span class="upmenu layui-btn layui-btn-primary" style="width: 95px">px</span>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">图片支持后缀</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="imgtype" value="{:getSetting('imgtype')}" autocomplete="off" placeholder="请输入图片支持后缀" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">音频支持后缀</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="mp3type" value="{:getSetting('mp3type')}" autocomplete="off" placeholder="请输入支持后缀" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">视频支持后缀</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="mp4type" value="{:getSetting('mp4type')}" autocomplete="off" placeholder="请输入支持后缀" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">附件储存位置</label>
+                            {form:radio name="atta_type" data="['1'=>'本地','2'=>'七牛','3'=>'腾讯云','4'=>'阿里云','5'=>'FTP上传']" value=":getSetting('atta_type')??'1'" type="radio" /}
+                        </div>
+                        <div data-atta_type="1" class="vit-layout-fluid" >
+                        </div>
+                        <div data-atta_type="2" class="vit-layout-fluid" >
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">AccessKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="access_key" value="{:getSetting('access_key')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">SecretKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="secret_key" value="{:getSetting('secret_key')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">空间名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="space" value="{:getSetting('space')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">储存空间Bucket名称，需保证该空间可公共读写。</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问域名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="domain" value="{:getSetting('domain')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">访问域名，需要带http://或者https://，结尾不加/</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-atta_type="3" class="vit-layout-fluid">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问区域</label>
+                                <div class="layui-input-block">
+                                    {form:radio name="tx_region" data="[
+                                    'tj'=>'中国大陆 公有云地域 北京一区 (cos.ap-beijing-1.myqcloud.com)', 'bj'=>'中国大陆 公有云地域 北京 (cos.ap-beijing.myqcloud.com)',
+                                    'nj'=>'中国大陆 公有云地域 南京 (cos.ap-nanjing.myqcloud.com)', 'sh'=>'中国大陆 公有云地域 上海 (cos.ap-shanghai.myqcloud.com)',
+                                    'gz'=>'中国大陆 公有云地域 广州 (cos.ap-guangzhou.myqcloud.com)', 'cd'=>'中国大陆 公有云地域 成都 (cos.ap-chengdu.myqcloud.com)',
+                                    'cq'=>'中国大陆 公有云地域 重庆 (cos.ap-chongqing.myqcloud.com)', 'sz'=>'中国大陆 公有云地域 深圳金融 (cos.ap-shengzheng-fsi.myqcloud.com)'
+                                    ]" value="(:getSettingtx_region??'tj')" type="select" /}
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">AccessKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tx_accesskey" value="{:getSetting('tx_accesskey')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">SecretKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tx_secretkey" value="{:getSetting('tx_secretkey')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">空间名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tx_space" value="{:getSetting('tx_space')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">储存空间Bucket名称，需保证该空间可公共读写。</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问域名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tx_domain" value="{:getSetting('tx_domain')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">访问域名，需要带http://或者https://，结尾不加/</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-atta_type="4" class="vit-layout-fluid">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问区域</label>
+                                <div class="layui-input-block">
+                                    {form:radio name="al_region" data="[
+                                    'oss-cn-hangzhou'=>'华东1（杭州） (oss-cn-hangzhou.aliyuncs.com)', 'oss-cn-shanghai'=>'华东2（上海） (oss-cn-shanghai.aliyuncs.com)',
+                                    'oss-cn-qingdao'=>'华北1（青岛） (oss-cn-qingdao.aliyuncs.com)', 'oss-cn-beijing'=>'华北2（北京） (oss-cn-beijing.aliyuncs.com)',
+                                    'oss-cn-zhangjiakou'=>'华北 3（张家口） (oss-cn-zhangjiakou.aliyuncs.com)', 'oss-cn-huhehaote'=>'华北5（呼和浩特） (oss-cn-huhehaote.aliyuncs.com)',
+                                    'oss-cn-wulanchabu'=>'华北6（乌兰察布） (oss-cn-wulanchabu.aliyuncs.com)', 'oss-cn-shenzhen'=>'华南1（深圳） (oss-cn-shenzhen.aliyuncs.com)',
+                                    'oss-cn-heyuan'=>'华南2（河源） (oss-cn-heyuan.aliyuncs.com)', 'oss-cn-guangzhou'=>'华南3（广州） (oss-cn-guangzhou.aliyuncs.com)',
+                                    'oss-cn-chengdu'=>'西南1（成都） (oss-cn-chengdu.aliyuncs.com)', 'oss-cn-hongkong'=>'中国（香港） (oss-cn-hongkong.aliyuncs.com)',
+                                    'oss-us-west-1'=>'美国西部1（硅谷） (oss-us-west-1.aliyuncs.com)', 'oss-us-east-1'=>'美国东部1（弗吉尼亚） (oss-us-east-1.aliyuncs.com)',
+                                    'oss-ap-southeast-1'=>'亚太东南1（新加坡） (oss-ap-southeast-1.aliyuncs.com)'
+                                    ]" value="(:getSetting.al_region??'oss-cn-hangzhou')" type="select" /}
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">AccessKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="al_accesskey" value="{:getSetting('al_accesskey')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">SecretKey</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="al_secretkey" value="{:getSetting('al_secretkey')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">空间名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="al_space" value="{:getSetting('al_space')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">储存空间Bucket名称，需保证该空间可公共读写。</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" pane="">
+                                <label class="layui-form-label">内网上传</label>
+                                <div class="layui-input-block">
+                                    {form:radio name="al_intranet" data="['1'=>'关闭','2'=>'开启']" value=":getSetting('al_intranet')??'1'" type="radio" /}
+                                    <text class="text-grey">如果当前服务器和远程附件在同一地区机房可以使用内网上传。</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问域名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="al_domain" value="{:getSetting('al_domain')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">访问域名，需要带http://或者https://，结尾不加/</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-atta_type="5" class="vit-layout-fluid">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">FTP服务器地址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_ip" value="{:getSetting('ftp_ip')}"  autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">FTP服务器IP地址或者域名</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">FTP端口</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_port" value="{:getSetting('ftp_port')??'21'}"  autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">FTP端口，默认为21</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">FTP账号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_account" value="{:getSetting('ftp_account')}"  autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">FTP密码</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_pass" value="{:getSetting('ftp_pass')}" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上传路径</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_path"  value="{:getSetting('ftp_path')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">需要上传到那个目录内，例如/oss,前面加/，结尾不加/</text>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">访问域名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ftp_domain" value="{:getSetting('ftp_domain')}" autocomplete="off" placeholder="" class="layui-input">
+                                    <text class="text-grey">访问域名，需要带http://或者https://，结尾不加/</text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公众号名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_name" value="{:getSetting('wx_name')}" autocomplete="off" placeholder="请输入公众号名称" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">AppId</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_appid" value="{:getSetting('wx_appid')}" autocomplete="off" placeholder="请输入公众号AppId" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">AppSecret</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_appsecret" value="{:getSetting('wx_appsecret')}" autocomplete="off" placeholder="请输入公众号AppSecret" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">支付商户号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_mchid" value="{:getSetting('wx_mchid')}" autocomplete="off" placeholder="请输入微信支付商户号" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">AppSecret</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_apikey" value="{:getSetting('wx_apikey')}" autocomplete="off" placeholder="请输入微信支付秘钥" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">微信授权域名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="wx_sqdomain" value="{:getSetting('wx_sqdomain')}" autocomplete="off" placeholder="请输入微信授权域名" class="layui-input">
+                                <span>站点绑定多个域名时，可以设置一个统一的授权域名，域名需要带http://或者https://，如：http://www.vitphp.cn</span>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label">微信登录</label>
+                            <div class="layui-input-block">
+                                {form:radio name="wx_login" data="['1'=>'关闭','2'=>'开启']" value=":getSetting('wx_login')??'1'" type="radio" /}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" lay-filter="btnSignIn" lay-submit>立即提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<style type="text/css">
+    .layui-anim.layui-anim-upbit{
+        height: 200px;
+    }
+</style>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //提交
+        form.on('submit(btnSignIn)', function (data){
+            console.log(data.field);
+            $.post("{:url('index/system/setup_save')}",data.field).then(function(res){
+                console.log(res);
+                var res= JSON.parse(res);
+                if(res.code == 200){
+                    layer.msg(res.msg);
+                    setTimeout(function(){
+                        location.reload();
+                    },1500);
+                    return false;
+                }else{
+                    layer.msg(res.msg);
+
+                    return false;
+                }
+            });
+        })
+
+
+    });
+
+
+</script>
+{/block}

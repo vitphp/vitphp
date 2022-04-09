@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{$app.name} - {$system_site.title|default=""}</title>
+  <link rel="stylesheet" type="text/css" href="__ROOT__/static/plugs/layui/css/layui.css" />
+  <link rel="stylesheet" href="__ROOT__/static/plugs/vit/viticon/iconfont.css">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/common.css?v=20211010" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/addons.css?v=20211010" media="all">
+  <link rel="stylesheet" href="__ROOT__/static/theme/css/vitstyle.css?v=12" media="all">
+  <script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+  <script src="__ROOT__/static/plugs/other/js/clipboard.min.js"></script>
+  <script src="__ROOT__/static/plugs/wangeditor/wangEditor.min.js"></script>
+  <!--    重要-->
+  <script src="__ROOT__/static/theme/js/common.js?v=20220405"></script>
+  <script src="__ROOT__/static/plugs/layui/layui.js"></script>
+</head>
+<style type="text/css" id="vitadmin_theme"></style>
+<body>
+
+<div id="vit_style">
+  <!--主体-->
+  <div class="layui-body" id="vit_app_body" style="left: 0">
+    <div class="layui-header" style="width: 100%">
+      <!-- 头部区域 -->
+      <ul class="layui-layout-left" lay-filter="layadmin-layout-left" style="line-height: 60px">
+        <li class="layui-nav-item layadmin-flexible" lay-unselect="">
+          <div class="layui-logo" lay-href="">
+            {if $system_site}
+            <img class="logo" src="{$system_site.admin_logo|default='__ROOT__/static/theme/images/minilogo.png'}"/>{else}
+            <img class="logo" src="__ROOT__/static/theme/images/minilogo.png" /> {/if}
+              <span class="logo-size text-black">{$system_site.name|default='VitPhp'}</span>
+          </div>
+        </li>
+      </ul>
+      <ul class="layui-nav layui-layout-left" style="left: 200px;" lay-filter="layadmin-layout-left">
+        <li class="layui-nav-item layadmin-flexible" lay-unselect="">
+          <div class="text-orange">项目到期时间：{:app_dqTime()}</div>
+        </li>
+        <span class="layui-nav-bar" style="left: 39px; top: 58px; width: 0px; opacity: 0;"></span></ul>
+      <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+        <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+          <a href="javascript:void(0)" id="fullScreenBut" onclick="fullScreen('fullScreenBut')"
+             onmouseleave="layer.closeAll('tips')">
+            <i class="viticon vit-icon-quanping"></i>
+          </a>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img class="vit-nav-img" src="{$Request.session.admin.headimg|default='__ROOT__/static/theme/images/portrait.png'}">
+            {$Request.session.admin.username}
+          </a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="javascript:;" data-modal='{:tourl("/index/my/index")}' data-title="个人资料设置"><i class="viticon vit-icon-shezhi"></i> 个人中心</a>
+            </dd>
+            <dd>
+              <a href="javascript:;" data-modal='{:tourl("/index/my/edit_pass")}' data-title="修改密码"><i class="viticon vit-icon-mima"></i> 修改密码</a>
+            </dd>
+            {if auth("index/admin/clear")}
+            <dd><a href="javascript:;" data-post="{:url('index/admin/clear')}" data-param="" data-confirm="你确认要清理缓存吗">
+              <i class="viticon vit-icon-qingli"></i> 清理缓存</a>
+            </dd>
+            {/if}
+            <dd><a href="/index/login/logout"><i class="viticon vit-icon-tuichu"></i>退出登录</a></dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+    <!--    二级菜单-->
+    <div class="vit-body" id="min-menu">
+      <div class="min-menu" >
+        <div class="menu-head">
+          <div class="menu-header">
+            <div class="padding-bottom"><img src="{$app.logo}" style="height: 70px;"></div>
+            <span>{$app.name}</span>
+          </div>
+        </div>
+        <div class="layui-panel menu-body">
+          <ul class="layui-menu" id="docDemoMenu1">
+            {foreach $menu as $k=>$v}
+              <li  lay-url="{$v.pathUrl}">
+                <i class="viticon {$v.icon} padding-lr"></i>
+                <span class="layui-menu-body-title">{$v.title}</span>
+              </li>
+            {/foreach}
+          </ul>
+        </div>
+      </div>
+      <!-- 二级菜单结束-->
+      <div style="margin-left: 200px;" id="vit-body-menu">
+        <a href="javascript:void(0)" class="vit_minmenu" onclick="vit_minmenu()">
+          <i class="viticon vit-icon-shouqi "></i>
+        </a>
+        <div class="vit-layout-fluid" style="min-height: calc(100vh - 164px);background-color: #f5f7f9;">
+          <div class="layui-card">
+            <div class="vit-content" style="padding: 40px">
+              {block name='content'}{/block}
+            </div>
+          </div>
+          <div class="vit-layout-footer">
+            <div>{$system_site.foot_top|default=""|raw}</div>
+            <div>
+              {$system_site.foot_bottom|default=""|raw}
+              <span class="padding-left">
+              {if $system_site}{if $system_site.icpbeian}备案号：<a href="https://beian.miit.gov.cn/" target="_blank">{$system_site.icpbeian|default=""}</a>{/if}{/if}
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+  layui.config({
+    base: '__ROOT__/static/theme/js/',
+    version: "20220405"
+  }).use(['vitphp']);
+  // 监听菜单栏点击事件
+  $("#docDemoMenu1").find('li').click(function (){
+    location.href = this.getAttribute('lay-url');
+    saveStorage(this.getAttribute('lay-url'));
+  });
+  function saveStorage(re) {
+    sessionStorage.setItem("_iframe_src_", re);
+  }
+  // 图片404默认显示图片
+  $(function() {
+    document.addEventListener("error", function (e) {
+      var elem = e.target;
+      if (elem.tagName.toLowerCase() == 'img') {
+        elem.src = "__ROOT__/static/theme/images/img404.png";
+      }
+    }, true);
+  });
+</script>

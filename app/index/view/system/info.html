@@ -1,0 +1,204 @@
+{extend name="admin" /}
+{block name="content"}
+<div class="layui-col-md12 padding-bottom">
+    <div class="layui-card">
+        <div class="layui-card-header">云服务</div>
+        <div class="layui-card-body">
+            {if !getSetting('appid', 'cloud') || !getSetting('appkey', 'cloud')}
+            <div class="text-center">暂未绑定云服务
+                <span data-title="绑定云服务" data-modal="{:url('index/system/bindCloud')->build()}" class="layui-btn layui-btn-sm layui-btn-normal">绑定云服务</span>
+            </div>
+            {else/}
+            <table class="layui-table" lay-even="">
+                <tbody>
+                <tr>
+                    <td class="nowrap text-center">APPID</td>
+                    <td>
+                        {:getSetting('appid', 'cloud')}
+                        <span data-title="绑定云服务" data-modal="{:url('index/system/bindCloud')->build()}" class="layui-btn layui-btn-sm layui-btn-normal">重新绑定云服务</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="layui-table" lay-even="" style="display: none">
+                <tbody>
+                <tr>
+                    <td class="nowrap text-center">绑定账号</td>
+                    <td>{:getSetting('username', 'info')}
+                        <a href="{:config('vitphp.market')}api/login?auth={$auth}"  class="layui-btn layui-btn-sm layui-btn-normal">重新绑定</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">APPID</td>
+                    <td>{:getSetting('appid', 'info')}</td>
+                </tr>
+                </tbody>
+            </table>
+            {/if}
+        </div>
+    </div>
+</div>
+<div class="layui-col-md12 padding-bottom">
+    <div class="layui-card">
+        <div class="layui-card-header">系统信息</div>
+        <div class="layui-card-body layui-form" lay-filter="system">
+            <table class="layui-table" lay-even="">
+                <tbody>
+                <tr>
+                    <td class="nowrap text-center">核心框架</td>
+                    <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {:app()->version()}</a></td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">管理程序</td>
+                    <td><a target="_blank" href="https://www.vitphp.cn">
+                        {if $type == 'free'}免费版{/if}Vitphp {:config('vitphp.version')}</a>
+                        {if $isUpdate}
+                        <span id="cloud-version" class="layui-btn layui-btn-xs layui-btn-warm">版本更新{$cloudVersion}</span>
+                        {/if}
+                        <a href="https://www.vitphp.cn/doc/12/53.html" target="_blank">更新日志</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">服务器信息</td>
+                    <td>{:php_uname()}</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">服务器软件</td>
+                    <td>{$info.server}</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">PHP 版本</td>
+                    <td>PHP Version {$info.php}</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">上传限制</td>
+                    <td>{$info.filesize}</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">调试模式</td>
+                    <td>
+                        <input type="checkbox" {if $debug}checked{/if} lay-filter="debug" lay-skin="switch">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">开发模式</td>
+                    <td>
+                        <input type="checkbox" {if $vit_dev==1}checked{/if} lay-filter="vit_dev" lay-skin="switch">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="layui-col-md12">
+    <div class="layui-card">
+        <div class="layui-card-header">开发团队</div>
+        <div class="layui-card-body">
+            <table class="layui-table" lay-even="">
+                <tbody>
+                <tr>
+                    <td class="nowrap text-center">版权所有</td>
+                    <td>石家庄萌折科技有限公司</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">开发团队</td>
+                    <td>开猿团队</td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">官方网站</td>
+                    <td><a href="https://www.vitphp.cn" target="_blank">Vitphp.Cn</a> </td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">法律声明</td>
+                    <td><a href="https://www.vitphp.cn/license.html" target="_blank">用户使用协议</a> </td>
+                </tr>
+                <tr>
+                    <td class="nowrap text-center">官方QQ群</td>
+                    <td><a href="https://qm.qq.com/cgi-bin/qm/qr?k=U4M1Gcv5Cmxv39KDPAUtpR_dmGDrHWNx&jump_from=webapi" target="_blank">92474070</a> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+$('#cloud-version').click(function(){
+    layer.confirm('更新前请先备份数据，确认升级到最新版本？', {
+        title: '系统更新',
+        btn: ['确认升级','取消']
+    }, function(i){
+        var loadingIndex = layer.msg('升级中', {icon: 16,shade: 0.01, time:-1});
+        $.ajax({
+            type: "POST",
+            url: "/index/system/vitphp_update.html",
+            dataType: "json",
+            success: function (res) {
+                layer.close(loadingIndex);
+                if(res.code==1){
+                    layer.msg('更新成功');
+                    window.location.reload();
+                }else{
+                    layer.msg('失败，请重试');
+                }
+            },
+            error: function(e){
+                layer.close(loadingIndex);
+            }
+        });
+        console.log('adfadf');
+        layer.close(i);
+    });
+});
+
+layui.use(['form', 'layer'], function () {
+    var $ = layui.jquery, form = layui.form, layer = layui.layer;
+
+    form.on('switch(debug)', function(data){
+        var debug = data.elem.checked ? 1 : 2;
+        layer.load(1, {shade: [0.1, '#fff']});//开启loading
+        $.ajax({
+            type: "POST",
+            url: "{:url('system/debug')->build()}",
+            data: {debug: debug},
+            dataType: "json",
+            success: function (res) {
+                layer.closeAll('loading');
+                if(res.code!=1){
+                    layer.msg(res.msg || '操作异常');
+                }else{
+                    layer.msg(res.msg);
+                }
+            },
+            error: function(e){
+                layer.closeAll('loading');
+                layer.msg('操作失败');
+            }
+        });
+    });
+
+    form.on('switch(vit_dev)', function(data){
+        var vit_dev = data.elem.checked ? 1 : 2;
+        layer.load(1, {shade: [0.1, '#fff']});//开启loading
+        $.ajax({
+            type: "POST",
+            url: "{:url('system/vitDev')->build()}",
+            data: {vit_dev: vit_dev},
+            dataType: "json",
+            success: function (res) {
+                layer.closeAll('loading');
+                if(res.code!=1){
+                    layer.msg(res.msg || '操作异常');
+                }else{
+                    layer.msg(res.msg);
+                }
+            },
+            error: function(e){
+                layer.closeAll('loading');
+                layer.msg('操作失败');
+            }
+        });
+    });
+});
+</script>
+{/block}
