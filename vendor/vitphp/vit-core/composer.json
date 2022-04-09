@@ -1,0 +1,29 @@
+{
+    "name": "vitphp/vit-core",
+    "require": {
+        "topthink/framework": "^6.0.0"
+    },
+    "license": "Apache-2.0",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "vitphp\\admin\\":"src/"
+        }, 
+        "psr-0": {
+            "": "extend/"
+        },
+        "files": [
+            "src/helper/helpers.php"
+        ]
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "vitphp\\admin\\AdminService"
+            ],
+            "config": {
+                "admin": "config/admin.php"
+            }
+        }
+    }
+}

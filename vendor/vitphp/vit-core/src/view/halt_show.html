@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="__ROOT__/static/plugs/layui/css/layui.css" />
+    <script src="__ROOT__/static/plugs/jquery/jquery.min.js"></script>
+    <script src="__ROOT__/static/plugs/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '__ROOT__/static/theme/js/',
+            version: "{:date('mdhms')}"
+        }).use(['vitphp']);
+    </script>
+</head>
+<body style="background-color: {$code?'#01AAED':'#FFB800'}">
+<div class="layui-container" style="text-align: center;margin: 200px auto;">
+    <h1>{$message}</h1>
+</div>
+</body>
+</html>
