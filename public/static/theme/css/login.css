@@ -1,0 +1,74 @@
+/*登录页面样式开始*/
+.login-body{
+    background: #fff url(../images/login_bg.jpg?v=31) no-repeat center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+}
+.login-foot{
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.12rem;
+    font-weight: 500;
+    color: #404b56;
+}
+.login-page{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+.login-page span{
+    color: #919499;
+    font-size: 24px;
+    padding-left: 10px;
+    letter-spacing: 2px;
+}
+.login-page-boot{
+    margin: 144px auto;
+    overflow: hidden;
+    max-width: 960px;
+    width: 90%;
+    box-shadow: 0px 0px 13px 5px rgba(14,25,80,.2);
+    border-radius: 10px;
+}
+.login-page-boot .layui-col-xs12{
+    height: 500px;
+}
+.layui-col-xs12 .layui-col-xs7{
+    float: left;
+}
+.layui-col-xs12 .layui-col-xs5{
+    float: right;
+    background: #fff;
+    height: 100%
+}
+.margin46{
+    margin: 0 46px;
+}
+.layui-col-xs5 .margin46 h2{
+    letter-spacing: 2px;
+    margin: 16px;
+    display: block;
+    text-align: center;
+    color: #0092e7;
+    font-size: 30px;
+}
+.layui-form-item label{
+    float: left;
+    padding: 9px;
+    font-size: 22px;
+    color: #079df6;
+}
+.login-reg{
+    text-align: right;
+    color: #919499;
+}
+.login-reg a{
+    color: #006CFF;
+}
+.logo {
+    height: 27px;
+}

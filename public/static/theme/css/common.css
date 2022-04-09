@@ -1,0 +1,303 @@
+#vit_app ::-webkit-scrollbar{
+    width:0;
+}
+#min-menu ::-webkit-scrollbar{
+  width:0;
+}
+.layui-nav-tree {
+  width:100%;
+}
+.logo{
+  height: 27px;
+}
+.logo-size{
+  font-size: 24px;
+  color: #fff;
+  padding-left: 10px;
+  letter-spacing:2px
+}
+.layui-body .layui-header{
+  position: fixed;
+  width: calc(100% - 253px);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+  border-bottom: 1px solid #f6f6f6;
+  box-sizing: border-box;
+  background-color: #fff;
+  height: 60px;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover{
+  background-color: #2d8cf0!important;
+  color: #fff;
+}
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+  height: 2px;
+  background-color: #2196F3;
+  bottom: auto;
+}
+.layui-nav-tree .layui-nav-bar{
+  background-color: #2d8cf0!important;
+  color: #fff;
+}
+.layui-nav-tree .layui-nav-item a {
+  position: relative;
+  height: 45px;
+  line-height: 45px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 3px 50px;
+}
+.layui-nav .layui-nav-item a:hover,.layui-nav .layui-this a{
+  color: #333;
+}
+.layui-nav .layui-nav-item a:hover, .layui-nav .layui-this a {
+  color: #fff;
+}
+.layui-side-scroll{
+  overflow-y: scroll;
+  background-color:#03152A;
+  width:100%;
+}
+.layui-nav *{
+  font-size:14px;
+}
+.layui-nav .layui-nav-item .viticon{
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  margin-top: -19px;
+}
+
+.layui-nav .layui-nav-item .layui-cite-2 cite{
+  left: 70px;
+}
+.layui-side-scroll .layui-logo, .layui-side-scroll .layui-logo a {
+  color: #fff;
+  color: rgba(255,255,255,.8);
+}
+
+.layui-bg-black,.layui-nav{
+  background-color: #03152A;
+}
+
+.layui-body .layui-header .layui-nav {
+  background: 0 0;
+}
+.layui-body .layui-layout-left {
+  padding: 0 10px;
+  left: 0;
+}
+.layui-body .layui-header .layui-nav .layui-nav-mored{
+  border-color: transparent transparent #666 !important;
+}
+.layui-nav .layui-nav-mored, .layui-nav-itemed>a .layui-nav-more {
+  margin-top: -9px;
+  border-style: dashed dashed solid;
+  border-color: transparent transparent #fff;
+}
+
+.layui-body .layui-header .layui-nav .layui-nav-more {
+  border-top-color: #666;
+}
+.layui-body .layui-layout-left .layui-nav-item {
+  margin: 0 20px;
+}
+.layui-body .layui-input-search {
+  display: inline-block;
+  vertical-align: middle;
+  height: 32px;
+  border: none;
+  cursor: text;
+}
+.layui-body .layui-layout-left a, .layui-body .layui-layout-right {
+  padding: 0;
+}
+.layui-body .layui-header .layui-nav .layui-nav-item, .layui-bg-black .layui-logo {
+  height: 60px;
+  line-height: 60px;
+}
+.layui-body .layui-header .layui-nav{
+  background: 0 0;
+}
+.layui-body .layui-header a, .layui-body .layui-header a cite {
+  color: #333 !important;
+}
+.layui-body .layui-header a, .layui-bg-black .layui-header a cite {
+  color: #333;
+}
+.layui-header .layui-nav-item .viticon {
+  position: relative;
+  top: 1px;
+  font-size: 16px;
+  left:0;
+}
+.layui-header .layui-nav-item .viticon {
+  position: relative;
+  top: 1px;
+  font-size: 18px;
+  left:0;
+}
+.layui-body .layui-header .layui-layout-right .layui-nav-child {
+  left: auto;
+  right: 0;
+}
+.layui-body .layui-header .layui-nav-child {
+  top: 55px;
+}
+
+.layui-layout-right{
+  right:30px;
+}
+.layui-layer-color .layui-layer-content {
+  position: relative;
+  overflow: auto;
+}
+
+.vit-layout-fluid{
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  padding: 24px;
+  padding-bottom: 80px;
+}
+
+/*背景颜色 end*/
+
+/*兼容pc缩进菜单*/
+.layadmin-side-shrink .layui-side-scroll .layui-nav-left .layui-nav-item cite,.layadmin-side-shrink .layui-side-scroll .layui-nav-left .layui-nav-item span{
+  display:none;
+}
+.layadmin-side-shrink .layui-nav-left .layui-nav-itemed{
+  background:rgba(0,0,0,.3);
+}
+.layadmin-side-shrink .layui-nav-itemed>.layui-nav-child{
+  display:none !important;
+}
+
+/*兼容pc缩进菜单 end*/
+
+/*手机端*/
+/*@media screen and (max-width:800px){*/
+/*  .mobilenav{*/
+/*    display:block !important;*/
+/*  }*/
+/*}*/
+
+.vit-layout-footer {
+  position: absolute;
+  left: 0px;
+  right: 0;
+  bottom: 0;
+  z-index: 990;
+  height: 50px;
+  line-height: 25px;
+  padding: 8px;
+  box-shadow: -1px 0 4px rgb(0 0 0 / 12%);
+  color: #808695;
+  background-color: #FAFAFA;
+  text-align: center;
+}
+.vit-layout-footer a{
+  color: #808695;
+}
+.vit-body{
+  padding-top: 60px;
+}
+.layui-nav .layui-nav-mored, .layui-nav-itemed>a .layui-nav-more{
+  border-color: transparent transparent #fff;
+}
+/*隐藏滚动条*/
+.scroll_bar::-webkit-scrollbar{
+    width:0;
+}
+
+/*.vit-header-menu{*/
+/*    background-color: #fff;*/
+/*    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);*/
+/*    height: 50px;*/
+/*    line-height: 50px;*/
+/*    margin-bottom: 0;*/
+/*    border-radius: 0;*/
+/*}*/
+/*.layui-breadcrumb{*/
+/*    border-top: 1px solid #f6f6f6;*/
+/*    padding: 0 15px;*/
+/*}*/
+.layui-tab-brief>.layui-tab-title .layui-this{
+  color: #1e9fff;
+}
+.layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after{
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid #1e9fff;
+}
+/*限制弹框宽带，实现手机自适应*/
+.layui-layer{
+  max-width: 800px;
+}
+/*!*主体内容页样式结束*!*/
+/*上传框*/
+.upmenu{
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+.upmenu a{
+  height: 38px;
+  line-height: 38px;
+  padding: 0px 20px;
+  font-size: 12px;
+}
+.up-input{
+  width: calc(100% - 94px);
+}
+.up-bofang{
+  width: calc(100% - 160px);
+}
+.bofang{
+  top: 0;
+  right: 94px;
+  position: absolute;
+}
+/*从layout里移动过来的*/
+
+.vit-labe-grey{
+  width: 95px;
+  padding: 8px 0px;
+  height: 38px;
+  line-height: 20px;
+  border-width: 1px;
+  border-color: #d2d2d2;
+  border-style: solid;
+  border-radius: 2px 0 0 2px;
+  text-align: center;
+  background-color: #eeeeee;
+  box-sizing: border-box;
+}
+
+.vit—labe-grey .layui-input-inline{
+  margin-right: 0;
+}
+
+.vit-nav-img{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+/*分页*/
+.page-wrap {
+  width: 100%;
+  text-align: center;
+}
+.pagination li{
+  display: inline;
+}
+
+.line-one{
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}

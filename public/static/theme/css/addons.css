@@ -1,0 +1,55 @@
+.min-menu ::-webkit-scrollbar{
+    width:0;
+}
+/*二级菜单*/
+.min-menu{
+    width: 200px;
+    position: fixed;
+    display: block;
+    top: 60px;
+    z-index: 991;
+    overflow-y: scroll;
+    background-color: #fff;
+    border-right: 1px solid #e8e9eb;
+    bottom: 0;
+}
+.menu-head{
+    height: 150px;
+    border-bottom: 1px solid #e8e9eb;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+}
+.menu-header{
+    text-align: center;
+    padding: 30px 0 0;
+}
+.menu-logo{
+    display: block;
+    font-size: 42px;
+    color: #3296fa;
+    margin-bottom: 10px;
+}
+.menu-body{
+    border-top-width: 10px;
+    border-color: #fff;
+}
+.layui-menu li, .layui-menu-body-title a {
+    padding: 10px 20px;
+}
+.vit_minmenu{
+    top: 40%;
+    position: fixed;
+    line-height: 93px;
+    z-index: 992;
+
+    background: url(../../theme/images/nuv_03.png) no-repeat transparent;
+}
+.vit-body{
+    padding-top: 60px;
+}
+.layui-nav .layui-nav-mored, .layui-nav-itemed>a .layui-nav-more{
+    border-color: transparent transparent #fff;
+}
+/*隐藏滚动条*/
+.scroll_bar::-webkit-scrollbar{
+    width:0;
+}
